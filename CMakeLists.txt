@@ -1,6 +1,25 @@
+#
+# This file is part of cgrc.
+#
+# Copyright (c) 2022 Luca Carlon
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
 cmake_minimum_required(VERSION 3.14)
 
-project(cgrc LANGUAGES CXX)
+project(cgrc VERSION 1.0.0 LANGUAGES CXX)
+add_definitions(-DAPP_VERSION="1.0.0")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -16,5 +35,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 add_executable(cgrc
   main.cpp
+  cgrc_data.h
+  cgrc_conf.h
+  cgrcparser.h cgrcparser.cpp
+  cgrc_data.cpp
 )
 target_link_libraries(cgrc Qt${QT_VERSION_MAJOR}::Core)
