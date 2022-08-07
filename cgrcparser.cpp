@@ -24,6 +24,8 @@
 
 #include <QCoreApplication>
 #include <QCommandLineParser>
+#include <QTextStream>
+#include <QDebug>
 
 #include "cgrcparser.h"
 #include "cgrc_data.h"

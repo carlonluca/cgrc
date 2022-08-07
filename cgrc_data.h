@@ -26,6 +26,7 @@
 #define CGRC_DATA_H
 
 #include <QMap>
+#include <QSet>
 #include <QRegularExpression>
 
 #include "lightlogger/lc_logging.h"
