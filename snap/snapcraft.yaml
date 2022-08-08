@@ -15,10 +15,11 @@ parts:
     source-type: git
     source-branch: master
     source: https://github.com/carlonluca/cgrc.git
-    source-subdir: .
     build-packages:
       - g++
       - cmake
       - qt5-default
     stage-packages:
+      - libc6
+      - libstdc++6
       - libqt5core5a
