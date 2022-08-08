@@ -124,7 +124,11 @@ QList<ColorItem> CGRCParser::parseColors(const QString& colors)
     const QStringList captures = colors.split(QSL(","));
     for (const QString& capture : captures) {
         ColorItem colorItem;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         const QStringList options = capture.split(QSL(" "), Qt::SkipEmptyParts);
+#else
+        const QStringList options = capture.split(QSL(" "), QString::SkipEmptyParts);
+#endif
         for (const QString& option : options) {
             // Attributes.
             QString lowerOption = option.toLower();
