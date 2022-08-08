@@ -41,3 +41,5 @@ add_executable(cgrc
   cgrc_data.cpp
 )
 target_link_libraries(cgrc Qt${QT_VERSION_MAJOR}::Core)
+
+install(TARGETS cgrc RUNTIME DESTINATION bin)
