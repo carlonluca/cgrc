@@ -1,0 +1,24 @@
+name: cgrc
+version: '0.1.0'
+grade: devel
+base: core18
+summary: cgrc
+description: "A generic formatter for logs"
+
+apps:
+  cgrc:
+    command: cgrc
+
+parts:
+  cgrc:
+    plugin: cmake
+    source-type: git
+    source-branch: master
+    source: https://github.com/carlonluca/cgrc.git
+    source-subdir: .
+    build-packages:
+      - g++
+      - cmake
+      - qt5-default
+    stage-packages:
+      - libqt5core5a
