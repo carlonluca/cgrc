@@ -26,12 +26,14 @@
 #include <QCommandLineParser>
 #include <QRegularExpression>
 #include <QFile>
+#include <QDebug>
 
 #include <iostream>
 #include <csignal>
 
 #include "cgrc_data.h"
 #include "cgrcparser.h"
+#include "cgrcconfmanager.h"
 
 #include "lqtutils/lqtutils_string.h"
 
@@ -48,6 +50,12 @@ int main(int argc, char** argv)
 
     if (parser.isSet(QSL("version"))) {
         parser.showVersion();
+        return 0;
+    }
+
+    if (parser.isSet(QSL("list-locations"))) {
+        qInfo() << "System location:" << CGRCConfManager::defaultSystemPath();
+        qInfo() << "User location:  " << CGRCConfManager::defaultUserPath();
         return 0;
     }
 

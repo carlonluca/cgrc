@@ -109,12 +109,14 @@ QString CGRCParser::parseLogLine(const QList<ConfItem>& confItems, const QString
 
 void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parser)
 {
-    QCommandLineOption optHelp(QSL("version"), QSL("Show the version of the application"));
+    QCommandLineOption optHelp(QSL("version"), QSL("Shows the version of the application"));
+    QCommandLineOption optListLocations(QSL("list-locations"), QSL("Shows the location to use for the conf files"));
 
     parser->setApplicationDescription("cgrc");
     parser->addHelpOption();
     parser->addPositionalArgument("conf", "Configuration file");
     parser->addOption(optHelp);
+    parser->addOption(optListLocations);
     parser->process(app->arguments());
 }
 

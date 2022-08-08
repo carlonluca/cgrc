@@ -38,6 +38,7 @@ add_executable(cgrc
   cgrc_data.h
   cgrc_conf.h
   cgrcparser.h cgrcparser.cpp
+  cgrcconfmanager.h cgrcconfmanager.cpp
   cgrc_data.cpp
 )
 target_link_libraries(cgrc Qt${QT_VERSION_MAJOR}::Core)
