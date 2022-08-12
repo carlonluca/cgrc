@@ -53,6 +53,7 @@ QString CGRCParser::parseLogLine(const QList<ConfItem>& confItems, const QString
             break;
         if (matches.hasNext() && confItem.skip)
             return QString();
+        stopProcessing = (confItem.countMode == CGRC_COUNT_STOP && matches.hasNext());
         while (matches.hasNext()) {
 #if DEBUG_LOG
             qDebug() << "Regex matches:" << confItem.regexp.pattern();
@@ -71,8 +72,6 @@ QString CGRCParser::parseLogLine(const QList<ConfItem>& confItems, const QString
                 break;
             }
         }
-
-        stopProcessing = (confItem.countMode == CGRC_COUNT_STOP);
     }
 
     QString formattedLine;
