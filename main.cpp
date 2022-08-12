@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     if (args.size() < 1)
         parser.showHelp(-1);
 
-    const QString& confPath = args[0];
+    const QString& confPath = CGRCConfManager::pathForConf(args[0]);
     QFile confFile(confPath);
     if (!confFile.exists()) {
         qCritical("File does not exist: %s", qPrintable(confPath));

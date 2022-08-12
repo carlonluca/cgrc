@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>conf/prio</file>
+        <file>conf/ping</file>
+    </qresource>
+</RCC>

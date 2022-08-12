@@ -10,6 +10,8 @@ public:
 
     static QString defaultSystemPath();
     static QString defaultUserPath();
+
+    static QString pathForConf(const QString& conf);
 };
 
 #endif // CGRCCONFMANAGER_H

@@ -1,0 +1,12 @@
+# Debug
+regexp=(Debug|Dbg)
+colours=unchanged,blue
+# Message
+regexp=(Info|Message|Messaggio)
+colours=green
+# Warning     
+#regexp=.*(Alarm|Allarme|Warn|Warning).*
+#colours=yellow
+# Error
+#regexp=.*(Error|Critical|Errore|Erro|Err).*
+#colours=red

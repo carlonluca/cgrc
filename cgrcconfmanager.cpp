@@ -22,3 +22,33 @@ QString CGRCConfManager::defaultUserPath()
         return snapLocation;
     return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 }
+
+QString CGRCConfManager::pathForConf(const QString& conf)
+{
+    // Try Qt resources first.
+    QString proposedPath;
+
+    proposedPath = QString(":%1%2%3")
+            .arg(QSL("conf"))
+            .arg(QDir::separator())
+            .arg(conf);
+    if (QFile(proposedPath).exists())
+        return proposedPath;
+
+    proposedPath = QString("%1%2%3")
+            .arg(defaultUserPath())
+            .arg(QDir::separator())
+            .arg(conf);
+    if (QFile(proposedPath).exists())
+        return proposedPath;
+
+    proposedPath = QString("%1%2%3")
+            .arg(defaultSystemPath())
+            .arg(QDir::separator())
+            .arg(conf);
+    if (QFile(proposedPath).exists())
+        return proposedPath;
+
+    qFatal("Cannot find conf file: %s", qPrintable(conf));
+    return QString();
+}
