@@ -59,6 +59,11 @@ int main(int argc, char** argv)
         return 0;
     }
 
+    if (parser.isSet(QSL("list-configurations"))) {
+        CGRCConfManager::printAvailConfs();
+        return 0;
+    }
+
     const QStringList args = parser.positionalArguments();
     if (args.size() < 1)
         parser.showHelp(-1);

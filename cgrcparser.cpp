@@ -110,12 +110,14 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
 {
     QCommandLineOption optHelp(QSL("version"), QSL("Shows the version of the application"));
     QCommandLineOption optListLocations(QSL("list-locations"), QSL("Shows the location to use for the conf files"));
+    QCommandLineOption optListConfs(QSL("list-configurations"), QSL("List available configurations"));
 
     parser->setApplicationDescription("cgrc");
     parser->addHelpOption();
     parser->addPositionalArgument("conf", "Configuration file");
     parser->addOption(optHelp);
     parser->addOption(optListLocations);
+    parser->addOption(optListConfs);
     parser->process(app->arguments());
 }
 
