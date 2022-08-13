@@ -80,8 +80,8 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    const Conf conf = CGRCParser::parseConf(confFile);
-    const QList<ConfItem>& confItems = conf.items;
+    const CGRCConf conf = CGRCParser::parseConf(confFile);
+    const QList<CGRCConfItem>& confItems = conf.items;
 
     while (!std::cin.eof()) {
         std::string line;

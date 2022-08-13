@@ -38,10 +38,10 @@ class CGRCParser
 public:
     CGRCParser();
 
-    static QString parseLogLine(const QList<ConfItem>& confItems, const QString& inLine);
+    static QString parseLogLine(const QList<CGRCConfItem>& confItems, const QString& inLine);
     static void parseCmd(const QCoreApplication* app, QCommandLineParser* parser);
-    static QList<ColorItem> parseColors(const QString& colors);
-    static Conf parseConf(QFile& confFile);
+    static QList<CGRCColorItem> parseColors(const QString& colors);
+    static CGRCConf parseConf(QFile& confFile);
 };
 
 #endif // CGRCPARSER_H

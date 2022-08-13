@@ -99,7 +99,7 @@ void CGRCConfManager::printAvailableConfs(const QFileInfoList& infos)
         QFile f(info.absoluteFilePath());
         if (!f.open(QIODevice::ReadOnly))
             continue;
-        Conf c = CGRCParser::parseConf(f);
+        CGRCConf c = CGRCParser::parseConf(f);
         qInfo().noquote() << "\t" << info.absoluteFilePath() << "->" << c.description;
     }
 }

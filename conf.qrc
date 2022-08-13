@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>conf/prio</file>
         <file>conf/ping</file>
+        <file>conf/logcat</file>
     </qresource>
 </RCC>

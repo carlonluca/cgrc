@@ -36,18 +36,18 @@
 CGRCParser::CGRCParser()
 {}
 
-QString CGRCParser::parseLogLine(const QList<ConfItem>& confItems, const QString& inLine)
+QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QString& inLine)
 {
     QString outLine = inLine;
-    const ColorItem** charColors = new const ColorItem*[inLine.length()];
-    memset(charColors, 0, sizeof(ColorItem*)*inLine.length());
+    const CGRCColorItem** charColors = new const CGRCColorItem*[inLine.length()];
+    memset(charColors, 0, sizeof(CGRCColorItem*)*inLine.length());
 
 #if DEBUG_LOG
     qInfo() << "-> Processing:" << inLine;
 #endif
 
     bool stopProcessing = false;
-    for (const ConfItem& confItem : confItems) {
+    for (const CGRCConfItem& confItem : confItems) {
         QRegularExpressionMatchIterator matches = confItem.regexp.globalMatch(inLine);
         if (stopProcessing)
             break;
@@ -75,7 +75,7 @@ QString CGRCParser::parseLogLine(const QList<ConfItem>& confItems, const QString
     }
 
     QString formattedLine;
-    const ColorItem* lastColor = charColors[0];
+    const CGRCColorItem* lastColor = charColors[0];
     int lastIndex = 0;
     for (int i = 1; i < inLine.length() + 1; i++) {
         if (charColors[i] == lastColor && i != inLine.length())
@@ -121,12 +121,12 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
     parser->process(app->arguments());
 }
 
-QList<ColorItem> CGRCParser::parseColors(const QString& colors)
+QList<CGRCColorItem> CGRCParser::parseColors(const QString& colors)
 {
-    QList<ColorItem> items;
+    QList<CGRCColorItem> items;
     const QStringList captures = colors.split(QSL(","));
     for (const QString& capture : captures) {
-        ColorItem colorItem;
+        CGRCColorItem colorItem;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         const QStringList options = capture.split(QSL(" "), Qt::SkipEmptyParts);
 #else
@@ -148,11 +148,11 @@ QList<ColorItem> CGRCParser::parseColors(const QString& colors)
     return items;
 }
 
-Conf CGRCParser::parseConf(QFile& confFile)
+CGRCConf CGRCParser::parseConf(QFile& confFile)
 {
-    Conf ret;
-    QList<ConfItem>& retItems = ret.items;
-    ConfItem currentItem;
+    CGRCConf ret;
+    QList<CGRCConfItem>& retItems = ret.items;
+    CGRCConfItem currentItem;
     QTextStream stream(&confFile);
     while (!stream.atEnd()) {
         QString line = stream.readLine();

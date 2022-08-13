@@ -74,7 +74,7 @@ extern QMap<CGRC_Attrib, CGRC_ResetAttrib> COLORS_ATTR_CLEAR;
 extern QMap<QString, LC_LogColor> COLORS_FORG;
 extern QMap<QString, LC_BackColor> COLORS_BACK;
 
-struct ColorItem
+struct CGRCColorItem
 {
     QSet<CGRC_Attrib> attrs;
     LC_LogColor forg = LC_LogColor::LC_FORG_COL_DEFAULT;
@@ -101,28 +101,28 @@ struct ColorItem
     }
 };
 
-struct ConfItem
+struct CGRCConfItem
 {
     QRegularExpression regexp;
-    QList<ColorItem> colors;
+    QList<CGRCColorItem> colors;
     bool skip = false;
     CGRP_CountMode countMode = CGRP_CountMode::CGRC_COUNT_MORE;
 
     void clear() {
         regexp = QRegularExpression();
-        colors = QList<ColorItem>();
+        colors = QList<CGRCColorItem>();
         skip = false;
         countMode = CGRP_CountMode::CGRC_COUNT_MORE;
     }
 };
 
-inline bool operator==(const ConfItem& i1, const ConfItem& i2)
+inline bool operator==(const CGRCConfItem& i1, const CGRCConfItem& i2)
 {
     return i1.regexp == i2.regexp;
 }
 
-struct Conf {
-    QList<ConfItem> items;
+struct CGRCConf {
+    QList<CGRCConfItem> items;
     QString description;
 };
 
