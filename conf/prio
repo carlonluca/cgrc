@@ -1,3 +1,4 @@
+desc=Formats the output application logs containing typical words associated to priorities
 # Error
 regexp=.*(Error|Critical|Errore|Erro|Err).*
 colours=red

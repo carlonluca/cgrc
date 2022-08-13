@@ -1,3 +1,4 @@
+desc=Formats the output of the ping Linux command
 # IP
 regexp=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
 colours=bright_blue

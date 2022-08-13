@@ -146,13 +146,19 @@ QList<ColorItem> CGRCParser::parseColors(const QString& colors)
     return items;
 }
 
-QList<ConfItem> CGRCParser::parseConf(QFile& confFile)
+Conf CGRCParser::parseConf(QFile& confFile)
 {
-    QList<ConfItem> ret;
+    Conf ret;
+    QList<ConfItem>& retItems = ret.items;
     ConfItem currentItem;
     QTextStream stream(&confFile);
     while (!stream.atEnd()) {
         QString line = stream.readLine();
+        if (line.startsWith(QSL("desc="))) {
+            ret.description = line.replace(QSL("desc="), QSL(""));
+            continue;
+        }
+
         if (line.startsWith(QSL("regexp="))) {
             currentItem.regexp = QRegularExpression(line.replace(QSL("regexp="), QSL("")));
             if (!currentItem.regexp.isValid()) {
@@ -209,13 +215,13 @@ QList<ConfItem> CGRCParser::parseConf(QFile& confFile)
         }
 
         if (!currentItem.regexp.pattern().isEmpty()) {
-            ret.append(currentItem);
+            retItems.append(currentItem);
             currentItem.clear();
         }
     }
 
-    if (!ret.contains(currentItem))
-        ret.append(currentItem);
+    if (!retItems.contains(currentItem))
+        retItems.append(currentItem);
 
     return ret;
 }

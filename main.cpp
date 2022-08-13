@@ -75,7 +75,8 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    const QList<ConfItem> confItems = CGRCParser::parseConf(confFile);
+    const Conf conf = CGRCParser::parseConf(confFile);
+    const QList<ConfItem>& confItems = conf.items;
 
     while (!std::cin.eof()) {
         std::string line;

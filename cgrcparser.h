@@ -41,7 +41,7 @@ public:
     static QString parseLogLine(const QList<ConfItem>& confItems, const QString& inLine);
     static void parseCmd(const QCoreApplication* app, QCommandLineParser* parser);
     static QList<ColorItem> parseColors(const QString& colors);
-    static QList<ConfItem> parseConf(QFile& confFile);
+    static Conf parseConf(QFile& confFile);
 };
 
 #endif // CGRCPARSER_H

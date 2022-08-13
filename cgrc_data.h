@@ -121,4 +121,9 @@ inline bool operator==(const ConfItem& i1, const ConfItem& i2)
     return i1.regexp == i2.regexp;
 }
 
+struct Conf {
+    QList<ConfItem> items;
+    QString description;
+};
+
 #endif // CGRC_DATA_H
