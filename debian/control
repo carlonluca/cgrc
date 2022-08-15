@@ -1,0 +1,14 @@
+Source: cgrc
+Section: misc
+Priority: optional
+Maintainer: Luca Carlon <carlon.luca@gmail.com>
+Build-Depends: debhelper-compat (= 12), qtbase5-dev-tools (>= 5.9), qtbase5-dev (>= 5.9)
+Standards-Version: 4.4.1
+Homepage: https://github.com/carlonluca/cgrc
+
+Package: cgrc
+Architecture: any
+Depends: libqt5core5a (>= 5.9)
+Description: Generic log formatter based on conf files
+ A generic log formatter based on regexp's and conf
+ files.
