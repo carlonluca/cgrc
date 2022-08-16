@@ -1,5 +1,5 @@
 name: cgrc
-version: '0.2.1'
+version: '0.2.2'
 grade: devel
 base: core20
 summary: cgrc
