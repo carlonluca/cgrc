@@ -1,14 +1,13 @@
 name: cgrc
-version: '0.1.0'
+version: '0.2.1'
 grade: devel
-base: core18
+base: core20
 summary: cgrc
 description: "A generic formatter for logs"
 architectures:
-  - build-on: amd64
-    run-on: amd64
   - build-on: arm64
-    run-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 apps:
   cgrc:
@@ -18,7 +17,7 @@ parts:
   cgrc:
     plugin: cmake
     source-type: git
-    source-branch: master
+    source-tag: v0.2.1
     source: https://github.com/carlonluca/cgrc.git
     build-packages:
       - g++
