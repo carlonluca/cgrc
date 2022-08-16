@@ -11,13 +11,13 @@ architectures:
 
 apps:
   cgrc:
-    command: cgrc
+    command: usr/bin/cgrc
 
 parts:
   cgrc:
     plugin: cmake
     source-type: git
-    source-tag: v0.2.1
+    source-tag: v0.2.2
     source: https://github.com/carlonluca/cgrc.git
     build-packages:
       - g++

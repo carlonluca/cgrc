@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
+#include <QDebug>
 
 #include <lqtutils/lqtutils_string.h>
 
