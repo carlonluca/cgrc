@@ -4,6 +4,10 @@ grade: devel
 base: core18
 summary: cgrc
 description: "A generic formatter for logs"
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
 
 apps:
   cgrc:
