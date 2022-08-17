@@ -3,5 +3,6 @@
         <file>conf/prio</file>
         <file>conf/ping</file>
         <file>conf/logcat</file>
+        <file>conf/nginx</file>
     </qresource>
 </RCC>

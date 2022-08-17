@@ -1,0 +1,22 @@
+desc=Formats the default nginx log output
+
+# successful responses
+regexp=((?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\s+-\s+(.*)\s*(\[.*\])\s+\"([A-Z]+)\s+(.*)\"\s+(2\d+)\s+(\d+)\s\"(.*)\"\s+\"(.*)\"
+colours=default,cyan,default,white,white on_magenta,bright_green,white on_bright_green,unchanged,bright_green
+count=stop
+# redirection responses
+regexp=((?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\s+-\s+(.*)\s*(\[.*\])\s+\"([A-Z]+)\s+(.*)\"\s+(3\d+)\s+(\d+)\s\"(.*)\"\s+\"(.*)\"
+colours=default,cyan,default,white,white on_magenta,green,white on_green,unchanged,green
+count=stop
+# informational responses
+regexp=((?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\s+-\s+(.*)\s*(\[.*\])\s+\"([A-Z]+)\s+(.*)\"\s+(1\d+)\s+(\d+)\s\"(.*)\"\s+\"(.*)\"
+colours=default,cyan,default,white,white on_magenta,green,white on_green,unchanged,green
+count=stop
+# client error responses
+regexp=((?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\s+-\s+(.*)\s*(\[.*\])\s+\"([A-Z]+)\s+(.*)\"\s+(4\d+)\s+(\d+)\s\"(.*)\"\s+\"(.*)\"
+colours=default,cyan,default,white,white on_magenta,yellow,white on_yellow,unchanged,yellow
+count=stop
+# server error responses
+regexp=((?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))\s+-\s+(.*)\s*(\[.*\])\s+\"([A-Z]+)\s+(.*)\"\s+(5\d+)\s+(\d+)\s\"(.*)\"\s+\"(.*)\"
+colours=default,cyan,default,white,white on_magenta,red,white on_red,unchanged,red
+count=stop
