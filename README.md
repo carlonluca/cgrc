@@ -83,4 +83,4 @@ Snap packages are available for cgrc for architectures amd64, armhf and aarch64.
 
 ### AUR
 
-PKGBUILD file is available in the repo.
+An entry is available in the AUR: https://aur.archlinux.org/packages/cgrc.
