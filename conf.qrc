@@ -4,5 +4,6 @@
         <file>conf/ping</file>
         <file>conf/logcat</file>
         <file>conf/nginx</file>
+        <file>conf/dockerps</file>
     </qresource>
 </RCC>
