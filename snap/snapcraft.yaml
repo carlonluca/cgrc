@@ -1,5 +1,5 @@
 name: cgrc
-version: '0.2.2'
+version: '0.3.0'
 grade: devel
 base: core20
 summary: cgrc
@@ -19,7 +19,7 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
     source-type: git
-    source-tag: v0.2.2
+    source-tag: v0.3.0
     source: https://github.com/carlonluca/cgrc.git
     build-packages:
       - g++
