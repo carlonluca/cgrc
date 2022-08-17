@@ -84,23 +84,29 @@ QString CGRCConfManager::pathForConf(const QString& conf)
 
 void CGRCConfManager::printAvailConfs()
 {
-    qInfo() << "Embedded configurations:";
+    qInfo() << "\tEmbedded configurations:";
     printAvailableConfs(QDir(QSL(":/conf")).entryInfoList());
 
-    qInfo() << "User configurations:";
+    qInfo() << "\n\tUser configurations:";
     printAvailableConfs(QDir(defaultUserPath()).entryInfoList());
 
-    qInfo() << "System configurations:";
+    qInfo() << "\n\tSystem configurations:";
     printAvailableConfs(QDir(defaultSystemPath()).entryInfoList());
 }
 
 void CGRCConfManager::printAvailableConfs(const QFileInfoList& infos)
 {
+    if (infos.isEmpty())
+        qInfo().noquote() << QSL("None");
+
     for (const QFileInfo& info : infos) {
         QFile f(info.absoluteFilePath());
         if (!f.open(QIODevice::ReadOnly))
             continue;
         CGRCConf c = CGRCParser::parseConf(f);
-        qInfo().noquote() << "\t" << info.absoluteFilePath() << "->" << c.description;
+        qInfo().noquote() << "\t\t"
+                          << info.absoluteFilePath()
+                          << "->"
+                          << (c.description.isEmpty() ? QSL("?") : c.description);
     }
 }

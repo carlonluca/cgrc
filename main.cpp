@@ -41,7 +41,10 @@ int main(int argc, char** argv)
 {
     signal(SIGINT, SIG_IGN);
 
+#ifdef QT_DEBUG
     qInstallMessageHandler(lightlogger::log_handler);
+#endif
+
     QCoreApplication app(argc, argv);
     app.setApplicationVersion(APP_VERSION);
 
@@ -54,8 +57,9 @@ int main(int argc, char** argv)
     }
 
     if (parser.isSet(QSL("list-locations"))) {
-        qInfo() << "System location:" << CGRCConfManager::defaultSystemPath();
-        qInfo() << "User location:  " << CGRCConfManager::defaultUserPath();
+        qInfo() << "Locations on your system used by cgrc:";
+        qInfo() << "\tSystem location:" << CGRCConfManager::defaultSystemPath();
+        qInfo() << "\tUser location  :" << CGRCConfManager::defaultUserPath();
         return 0;
     }
 
