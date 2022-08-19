@@ -10,6 +10,9 @@ jobs:
       - name: build
         shell: bash
         run: |
+          ls -l
+          cd cgrc
+          ls -l
           mkdir build
           cd build
           cmake ..
