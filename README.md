@@ -84,3 +84,21 @@ Snap packages are available for cgrc for architectures amd64, armhf and aarch64.
 ### AUR
 
 An entry is available in the AUR: https://aur.archlinux.org/packages/cgrc.
+
+### Build Yourself
+
+cgrc requires the Qt tools and the Qt base module >= 5.15 (earlier versions are untested). It can only be built using cmake:
+
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+
+## Examples
+
+<p style="text-align: center;">
+<img src="./doc/demo_ping.png" width="50%">
+<img src="./doc/demo_dockerps.png" width="100%">
+</p>
