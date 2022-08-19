@@ -2,8 +2,13 @@ name: cgrc
 version: '0.3.1'
 grade: devel
 base: core20
-summary: cgrc
-description: "A generic formatter for logs"
+confinement: strict
+summary: Configurable terminal text formatter
+description: |
+  cgrc formats text from stdin according to custom configuration files
+  and outputs the result with ANSI escape codes to stdout. Configuration
+  files includes a set of regular expressions with the related format
+  to be used to the match and the captures.
 architectures:
   - build-on: arm64
   - build-on: armhf
