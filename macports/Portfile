@@ -10,7 +10,7 @@ github.setup        carlonluca cgrc v0.3.2
 version             0.3.2
 revision            1
 license             GPL-3
-categories          sysutils
+categories          textproc
 platforms           darwin
 maintainers         {@carlonluca gmail.com:carlon.luca} openmaintainer
 homepage            https://github.com/carlonluca/cgrc
