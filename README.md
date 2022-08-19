@@ -98,9 +98,9 @@ make
 
 ## Examples
 
-<p style="text-align: center;">
-<img src="./doc/demo_ping.png" width="50%">
-<img src="./doc/demo_dockerps.png" width="100%">
+<p align="center">
+  <img src="./doc/demo_ping.png" width="50%">
+  <img src="./doc/demo_dockerps.png" width="100%">
 </p>
 
 ## Configurations
