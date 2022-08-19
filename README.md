@@ -102,3 +102,7 @@ make
 <img src="./doc/demo_ping.png" width="50%">
 <img src="./doc/demo_dockerps.png" width="100%">
 </p>
+
+## Configurations
+
+There are only a few configurations available at the moment, the ones that I use. You can add your own configurations if you want into local files. If you want to share your configurations, please open a MR.
