@@ -13,6 +13,7 @@ license             GPL-3
 categories          sysutils
 platforms           darwin
 maintainers         {@carlonluca gmail.com:carlon.luca} openmaintainer
+homepage            https://github.com/carlonluca/cgrc
 description         Configurable terminal text formatter
 long_description    cgrc formats text from stdin according to custom configuration files \
                     and outputs the result with ANSI escape codes to stdout. Configuration \
