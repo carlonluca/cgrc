@@ -1,0 +1,17 @@
+name: Build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    container:
+      image: docker.io/carlonluca/qt-dev:6.3.1_jammy
+    steps:
+      - name: build
+        shell: bash
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+          ./cgrc --version
