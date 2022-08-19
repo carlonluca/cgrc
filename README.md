@@ -7,11 +7,14 @@ cgrc is a binary that can filter text to improve formatting in a console. It is 
 cgrc should be mostly compatible with grc, so refer to https://github.com/garabik/grc for more info about the configuration file it needs. There are anyway a few changes that I found useful for me. This is the syntax of the command:
 
 ```
-Usage: /snap/cgrc/4/usr/bin/cgrc [options] conf
-cgrc
+Usage: cgrc [options] conf
+Configurable terminal text formatter
+
+cgrc formats text from stdin according to custom configuration files and outputs the result with ANSI escape codes to stdout. Configuration files includes a set of regular expressions with the related format to be used to the match and the captures.
 
 Options:
-  -h, --help             Displays this help.
+  -h, --help             Displays help on commandline options.
+  --help-all             Displays help including Qt specific options.
   --version              Shows the version of the application
   --list-locations       Shows the location to use for the conf files
   --list-configurations  List available configurations
