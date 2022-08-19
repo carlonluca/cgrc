@@ -6,8 +6,8 @@ PortGroup           cmake 1.1
 PortGroup           qt6 1.0
 
 fetch.type          git
-github.setup        carlonluca cgrc v0.3.1
-version             0.3.1
+github.setup        carlonluca cgrc v0.3.2
+version             0.3.2
 revision            1
 license             GPL-3
 categories          sysutils
