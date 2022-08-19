@@ -112,7 +112,14 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
     QCommandLineOption optListLocations(QSL("list-locations"), QSL("Shows the location to use for the conf files"));
     QCommandLineOption optListConfs(QSL("list-configurations"), QSL("List available configurations"));
 
-    parser->setApplicationDescription("cgrc");
+#define APP_DESCRIPTION                                               \
+    "Configurable terminal text formatter\n\n"                        \
+    "cgrc formats text from stdin according to custom configuration " \
+    "files and outputs the result with ANSI escape codes to stdout. " \
+    "Configuration files includes a set of regular expressions with " \
+    "the related format to be used to the match and the captures."
+
+    parser->setApplicationDescription(QSL(APP_DESCRIPTION));
     parser->addHelpOption();
     parser->addPositionalArgument("conf", "Configuration file");
     parser->addOption(optHelp);
