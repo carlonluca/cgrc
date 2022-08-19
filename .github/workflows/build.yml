@@ -1,0 +1,21 @@
+name: Build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: docker.io/carlonluca/qt-dev:6.3.1_jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Build
+        shell: bash
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+          ./cgrc --version
