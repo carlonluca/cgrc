@@ -6,14 +6,11 @@ PortGroup           cmake 1.1
 PortGroup           qt6 1.0
 
 fetch.type          git
-github.setup        carlonluca cgrc v0.3.2
-version             0.3.2
-revision            1
+github.setup        carlonluca cgrc 0.3.2 v
+revision            0
 license             GPL-3
 categories          textproc
-platforms           darwin
 maintainers         {@carlonluca gmail.com:carlon.luca} openmaintainer
-homepage            https://github.com/carlonluca/cgrc
 description         Configurable terminal text formatter
 long_description    cgrc formats text from stdin according to custom configuration files \
                     and outputs the result with ANSI escape codes to stdout. Configuration \
