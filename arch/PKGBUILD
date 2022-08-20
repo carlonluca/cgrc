@@ -8,6 +8,7 @@ arch=(any)
 url='https://github.com/carlonluca/cgrc'
 license=(GPL)
 depends=(qt6-base)
+makedepends=(git cmake)
 source=(git+https://github.com/carlonluca/cgrc.git#tag=v$pkgver)
 md5sums=('SKIP')
 
