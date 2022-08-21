@@ -87,18 +87,16 @@ int main(int argc, char** argv)
     const CGRCConf conf = CGRCParser::parseConf(confFile);
     const QList<CGRCConfItem>& confItems = conf.items;
 
-    while (!std::cin.eof()) {
-        std::string line;
-        std::getline(std::cin, line);
-
-        QString formattedLine = CGRCParser::parseLogLine(confItems, QString::fromStdString(line));
-        if (formattedLine.isEmpty())
+    QTextStream stream(stdin);
+    while (!stream.atEnd()) {
+        const QString line = stream.readLine();
+        const QString formattedLine = CGRCParser::parseLogLine(confItems, line);
+        if (Q_UNLIKELY(formattedLine.isEmpty()))
             continue;
 
-        QByteArray data = formattedLine.toLocal8Bit();
-        fprintf(stdout, "%s\n", data.data());
-        fflush(stdout);
+        fprintf(stdout, "%s\n", qPrintable(formattedLine));
     }
 
+    fflush(stdout);
     return 0;
 }
