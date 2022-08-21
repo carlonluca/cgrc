@@ -76,29 +76,53 @@ extern QMap<QString, LC_BackColor> COLORS_BACK;
 
 struct CGRCColorItem
 {
-    QSet<CGRC_Attrib> attrs;
-    LC_LogColor forg = LC_LogColor::LC_FORG_COL_DEFAULT;
-    LC_BackColor back = LC_BackColor::LC_BACK_COL_DEFAULT;
+    CGRCColorItem(const QSet<CGRC_Attrib>& attrs, LC_LogColor forg, LC_BackColor back) :
+        m_attrs(attrs)
+      , m_forg(forg)
+      , m_back(back)
+      , m_escapeSequence(buildEscapeSequence())
+      , m_clearSequence(buildClearSequence()) {}
 
-    // TODO: create only once
-    QString escapeSequence() const {
-        QString seq = QString("%1[%2;%3").arg(QChar(0x1b)).arg(forg).arg(back);
-        for (const CGRC_Attrib& attr : attrs)
+    CGRCColorItem(const QSet<CGRC_Attrib>& attrs) :
+        m_attrs(attrs)
+      , m_forg(LC_LogColor::LC_FORG_COL_DEFAULT)
+      , m_back(LC_BackColor::LC_BACK_COL_DEFAULT)
+      , m_escapeSequence(buildEscapeSequence())
+      , m_clearSequence(buildClearSequence()) {}
+
+    const QSet<CGRC_Attrib>& attrs() const { return m_attrs; }
+    const LC_LogColor& forg() const { return m_forg; }
+    const LC_BackColor& back() const { return m_back; }
+    const QString& escapeSequence() const { return m_escapeSequence; }
+    const QString& clearSequence() const { return m_clearSequence; }
+
+private:
+    QString buildEscapeSequence() const {
+        QString seq = QString("%1[%2;%3").arg(QChar(0x1b)).arg(m_forg).arg(m_back);
+        for (const CGRC_Attrib& attr : m_attrs)
             seq += QString(";%1").arg(attr);
         seq += "m";
         return seq;
     }
 
-    QString clearSequence() const {
-        if (attrs.isEmpty())
+    QString buildClearSequence() const {
+        if (m_attrs.isEmpty())
             return QString();
         QString seq = QString("%1[%2;%3").arg(QChar(0x1b)).arg(LC_LogColor::LC_FORG_COL_DEFAULT).arg(LC_BackColor::LC_BACK_COL_DEFAULT);
-        for (const CGRC_Attrib& attr : attrs)
+        for (const CGRC_Attrib& attr : m_attrs)
             if (COLORS_ATTR_CLEAR.contains(attr))
                 seq += QString(";%1").arg(COLORS_ATTR_CLEAR.value(attr));
         seq += "m";
         return seq;
     }
+
+private:
+    QSet<CGRC_Attrib> m_attrs;
+    LC_LogColor m_forg;
+    LC_BackColor m_back;
+
+    QString m_escapeSequence;
+    QString m_clearSequence;
 };
 
 struct CGRCConfItem
@@ -121,7 +145,8 @@ inline bool operator==(const CGRCConfItem& i1, const CGRCConfItem& i2)
     return i1.regexp == i2.regexp;
 }
 
-struct CGRCConf {
+struct CGRCConf
+{
     QList<CGRCConfItem> items;
     QString description;
 };

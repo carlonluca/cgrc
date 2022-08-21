@@ -63,7 +63,7 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
                 int from = match.capturedStart(i);
                 int to   = match.capturedEnd(i);
                 for (int j = from; j < to; j++) {
-                    if (!confItem.colors[i].attrs.contains(CGRC_NONE))
+                    if (!confItem.colors[i].attrs().contains(CGRC_NONE))
                         charColors[j] = &(confItem.colors[i]);
                 }
             }
@@ -133,22 +133,28 @@ QList<CGRCColorItem> CGRCParser::parseColors(const QString& colors)
     QList<CGRCColorItem> items;
     const QStringList captures = colors.split(QSL(","));
     for (const QString& capture : captures) {
-        CGRCColorItem colorItem;
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         const QStringList options = capture.split(QSL(" "), Qt::SkipEmptyParts);
 #else
         const QStringList options = capture.split(QSL(" "), QString::SkipEmptyParts);
 #endif
+
+        QSet<CGRC_Attrib> attrs;
+        LC_LogColor forg = LC_LogColor::LC_FORG_COL_DEFAULT;
+        LC_BackColor back = LC_BackColor::LC_BACK_COL_DEFAULT;
         for (const QString& option : options) {
             // Attributes.
             QString lowerOption = option.toLower();
             if (COLORS_ATTRS.contains(lowerOption))
-                colorItem.attrs.insert(COLORS_ATTRS.value(lowerOption));
+                attrs.insert(COLORS_ATTRS.value(lowerOption));
             if (COLORS_BACK.contains(lowerOption))
-                colorItem.back = COLORS_BACK.value(lowerOption);
+                back = COLORS_BACK.value(lowerOption);
             if (COLORS_FORG.contains(lowerOption))
-                colorItem.forg = COLORS_FORG.value(lowerOption);
+                forg = COLORS_FORG.value(lowerOption);
         }
+
+        CGRCColorItem colorItem(attrs, forg, back);
         items.append(colorItem);
     }
 
