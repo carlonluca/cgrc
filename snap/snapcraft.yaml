@@ -1,6 +1,6 @@
 name: cgrc
 version: '0.3.2'
-grade: devel
+grade: stable
 base: core20
 confinement: strict
 summary: Configurable terminal text formatter
