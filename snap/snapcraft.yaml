@@ -29,8 +29,8 @@ parts:
     build-packages:
       - g++
       - cmake
-      - qt5-default
+      - qt6-tools-dev
     stage-packages:
       - libc6
       - libstdc++6
-      - libqt5core5a
+      - libqt6core6
