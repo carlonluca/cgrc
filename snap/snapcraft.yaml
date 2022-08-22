@@ -24,7 +24,7 @@ parts:
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
     source-type: git
-    source-tag: v0.3.2
+    source-branch: master
     source: https://github.com/carlonluca/cgrc.git
     build-packages:
       - g++
