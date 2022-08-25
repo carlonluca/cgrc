@@ -111,6 +111,8 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
     QCommandLineOption optHelp(QSL("version"), QSL("Shows the version of the application"));
     QCommandLineOption optListLocations(QSL("list-locations"), QSL("Shows the location to use for the conf files"));
     QCommandLineOption optListConfs(QSL("list-configurations"), QSL("List available configurations"));
+    QCommandLineOption optConfFilePath(QStringList() << QSL("conf-path"), QSL("Local path to conf file"), QSL("conf-path"));
+    QCommandLineOption optInputFilePath(QSL("input-path"), QSL("Local path to input file"), QSL("input-path"));
 
 #define APP_DESCRIPTION                                               \
     "Configurable terminal text formatter\n\n"                        \
@@ -125,6 +127,8 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
     parser->addOption(optHelp);
     parser->addOption(optListLocations);
     parser->addOption(optListConfs);
+    parser->addOption(optConfFilePath);
+    parser->addOption(optInputFilePath);
     parser->process(app->arguments());
 }
 

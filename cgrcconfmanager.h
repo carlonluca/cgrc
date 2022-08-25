@@ -36,7 +36,7 @@ public:
     static QString defaultSystemPath();
     static QString defaultUserPath();
 
-    static QString pathForConf(const QString& conf);
+    static QString pathForConf(const QString& conf, bool localPath);
     static void printAvailConfs();
 
 private:

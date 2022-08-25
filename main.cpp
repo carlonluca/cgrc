@@ -69,16 +69,17 @@ int main(int argc, char** argv)
     }
 
     const QStringList args = parser.positionalArguments();
-    if (args.size() < 1)
+    if (args.size() < 1 && parser.value(QSL("conf-path")).isEmpty())
         parser.showHelp(-1);
 
-    const QString& confPath = CGRCConfManager::pathForConf(args[0]);
-    QFile confFile(confPath);
-    if (!confFile.exists()) {
-        qCritical("File does not exist: %s", qPrintable(confPath));
+    const QString confLocalPath = parser.value(QSL("conf-path"));
+    const QString& confPath = CGRCConfManager::pathForConf(
+                confLocalPath.isNull() ? args[0] : confLocalPath,
+                !confLocalPath.isNull());
+    if (confPath.isEmpty())
         return -1;
-    }
 
+    QFile confFile(confPath);
     if (!confFile.open(QIODevice::ReadOnly)) {
         qCritical("Cannot open conf file: %s", qPrintable(confPath));
         return -1;
@@ -86,10 +87,23 @@ int main(int argc, char** argv)
 
     const CGRCConf conf = CGRCParser::parseConf(confFile);
     const QList<CGRCConfItem>& confItems = conf.items;
+    const QString inputLocalPath = parser.value(QSL("input-path"));
 
-    QTextStream stream(stdin);
-    while (!stream.atEnd()) {
-        const QString line = stream.readLine();
+    QScopedPointer<QTextStream> stream;
+    QScopedPointer<QFile> inputFile;
+    if (inputLocalPath.isEmpty())
+        stream.reset(new QTextStream(stdin));
+    else {
+        inputFile.reset(new QFile(inputLocalPath));
+        if (!inputFile->open(QIODevice::ReadOnly)) {
+            qCritical() << "Could not open file:" << inputLocalPath;
+            return -1;
+        }
+
+        stream.reset(new QTextStream(inputFile.data()));
+    }
+    while (!stream->atEnd()) {
+        const QString line = stream->readLine();
         const QString formattedLine = CGRCParser::parseLogLine(confItems, line);
         if (Q_UNLIKELY(formattedLine.isEmpty()))
             continue;

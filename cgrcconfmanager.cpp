@@ -52,33 +52,40 @@ QString CGRCConfManager::defaultUserPath()
     return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 }
 
-QString CGRCConfManager::pathForConf(const QString& conf)
+QString CGRCConfManager::pathForConf(const QString& conf, bool localPath)
 {
-    // Try Qt resources first.
-    QString proposedPath;
+    if (localPath) {
+        QFileInfo info(conf);
+        if (info.exists())
+            return info.absoluteFilePath();
+    }
+    else {
+        // Try Qt resources first.
+        QString proposedPath;
 
-    proposedPath = QString(":%1%2%3")
-            .arg(QSL("conf"))
-            .arg(QDir::separator())
-            .arg(conf);
-    if (QFile(proposedPath).exists())
-        return proposedPath;
+        proposedPath = QString(":%1%2%3")
+                .arg(QSL("conf"))
+                .arg(QDir::separator())
+                .arg(conf);
+        if (QFile(proposedPath).exists())
+            return proposedPath;
 
-    proposedPath = QString("%1%2%3")
-            .arg(defaultUserPath())
-            .arg(QDir::separator())
-            .arg(conf);
-    if (QFile(proposedPath).exists())
-        return proposedPath;
+        proposedPath = QString("%1%2%3")
+                .arg(defaultUserPath())
+                .arg(QDir::separator())
+                .arg(conf);
+        if (QFile(proposedPath).exists())
+            return proposedPath;
 
-    proposedPath = QString("%1%2%3")
-            .arg(defaultSystemPath())
-            .arg(QDir::separator())
-            .arg(conf);
-    if (QFile(proposedPath).exists())
-        return proposedPath;
+        proposedPath = QString("%1%2%3")
+                .arg(defaultSystemPath())
+                .arg(QDir::separator())
+                .arg(conf);
+        if (QFile(proposedPath).exists())
+            return proposedPath;
+    }
 
-    qFatal("Cannot find conf file: %s", qPrintable(conf));
+    qCritical() << "Conf file" << conf << "does not exist.";
     return QString();
 }
 
