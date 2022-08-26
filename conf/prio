@@ -1,17 +1,21 @@
 desc=Formats the output of logs containing typical words associated to priorities
 # Error
-regexp=.*(Error|Critical|Errore|Erro|Err).*
+regexp=.*(\s+|^)(?i)(Error|Critical|Erro|Err|Fatal)(\s+|$).*
 colours=red
 count=stop
 # Warning
-regexp=.*(Alarm|Allarme|Warn|Warning).*
+regexp=.*(\s+|^)(?i)(Alarm|Warn|Warning)(\s+|$).*
 colours=yellow
 count=stop
 # Message
-regexp=.*(Info|Message|Messaggio).*
+regexp=.*(\s+|^)(?i)(Info|Message)(\s+|$).*
 colours=green
 count=stop
 # Debug
-regexp=.*(Debug|Dbg).*
+regexp=.*(\s+|^)(?i)(Debug|Dbg)(\s+|$).*
 colours=blue
+count=stop
+# Verbose
+regexp=.*(\s+|^)(?i)(Trace|Verb|Verbose)(\s+|$).*
+colours=white
 count=stop
