@@ -108,11 +108,17 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
 
 void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parser)
 {
-    QCommandLineOption optHelp(QSL("version"), QSL("Shows the version of the application"));
-    QCommandLineOption optListLocations(QSL("list-locations"), QSL("Shows the location to use for the conf files"));
-    QCommandLineOption optListConfs(QSL("list-configurations"), QSL("List available configurations"));
-    QCommandLineOption optConfFilePath(QStringList() << QSL("conf-path"), QSL("Local path to conf file"), QSL("conf-path"));
-    QCommandLineOption optInputFilePath(QSL("input-path"), QSL("Local path to input file"), QSL("input-path"));
+    QCommandLineOption optHelp(QSL("version"),
+                               QSL("Shows the version of the application."));
+    QCommandLineOption optListLocations(QSL("list-locations"),
+                                        QSL("Shows the location to use for the conf files."));
+    QCommandLineOption optListConfs(QSL("list-configurations"),
+                                    QSL("List available configurations."));
+    QCommandLineOption optConfFilePath(QSL("conf-path"),
+                                       QSL("The configuration argument is to be interpreted as a path to the configuration file."));
+    QCommandLineOption optInputFilePath(QSL("input-path"),
+                                        QSL("Path to input file."),
+                                        QSL("input-path"));
 
 #define APP_DESCRIPTION                                               \
     "Configurable terminal text formatter\n\n"                        \

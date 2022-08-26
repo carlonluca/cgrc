@@ -69,13 +69,11 @@ int main(int argc, char** argv)
     }
 
     const QStringList args = parser.positionalArguments();
-    if (args.size() < 1 && parser.value(QSL("conf-path")).isEmpty())
+    if (args.size() < 1)
         parser.showHelp(-1);
 
-    const QString confLocalPath = parser.value(QSL("conf-path"));
-    const QString& confPath = CGRCConfManager::pathForConf(
-                confLocalPath.isNull() ? args[0] : confLocalPath,
-                !confLocalPath.isNull());
+    const bool isConfLocalPath = parser.isSet(QSL("conf-path"));
+    const QString& confPath = CGRCConfManager::pathForConf(args[0], isConfLocalPath);
     if (confPath.isEmpty())
         return -1;
 
