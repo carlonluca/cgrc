@@ -42,6 +42,9 @@ public:
     static void parseCmd(const QCoreApplication* app, QCommandLineParser* parser);
     static QList<CGRCColorItem> parseColors(const QString& colors);
     static CGRCConf parseConf(QFile& confFile);
+
+private:
+    static const QString RESET_SEQUENCE;
 };
 
 #endif // CGRCPARSER_H

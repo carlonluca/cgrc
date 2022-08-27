@@ -33,14 +33,21 @@
 
 #include "lqtutils/lqtutils_string.h"
 
+const QString CGRCParser::RESET_SEQUENCE = QSL("\x1b[0m");
+
 CGRCParser::CGRCParser()
 {}
 
 QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QString& inLine)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    qsizetype inLineLength = inLine.length();
+#else
+    int inLineLength = inLine.length();
+#endif
     QString outLine = inLine;
-    const CGRCColorItem** charColors = new const CGRCColorItem*[inLine.length()];
-    memset(charColors, 0, sizeof(CGRCColorItem*)*inLine.length());
+    const CGRCColorItem** charColors = new const CGRCColorItem*[inLineLength];
+    memset(charColors, 0, sizeof(CGRCColorItem*)*inLineLength);
 
 #if DEBUG_LOG
     qInfo() << "-> Processing:" << inLine;
@@ -77,17 +84,16 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
     QString formattedLine;
     const CGRCColorItem* lastColor = charColors[0];
     int lastIndex = 0;
-    for (int i = 1; i < inLine.length() + 1; i++) {
-        if (charColors[i] == lastColor && i != inLine.length())
+    for (int i = 1; i < inLineLength + 1; i++) {
+        if (charColors[i] == lastColor && i != inLineLength)
             continue;
         int from = lastIndex;
         int to   = i;
         QString formattedSequence;
         if (!lastColor)
-            formattedSequence = QString(QSL("%1[%2m%3")).arg(QChar(0x1b)).arg(0).arg(inLine.mid(lastIndex, i - lastIndex));
-        else {
+            formattedSequence = RESET_SEQUENCE + inLine.mid(lastIndex, i - lastIndex);
+        else
             formattedSequence = lastColor->escapeSequence() + (inLine.mid(lastIndex, i - lastIndex)) + lastColor->clearSequence();
-        }
 
 #if DEBUG_LOG
         qDebug() << inLine.mid(lastIndex, i - lastIndex) << "->" << formattedSequence;
@@ -99,7 +105,7 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
         lastColor = charColors[i];
     }
 
-    formattedLine.append(QString(QSL("%1[0m")).arg(QChar(0x1b)));
+    formattedLine.append(RESET_SEQUENCE);
 
     delete[] charColors;
 
