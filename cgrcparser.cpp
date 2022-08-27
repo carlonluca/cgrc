@@ -82,6 +82,7 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
     }
 
     QString formattedLine;
+    QString formattedSequence;
     const CGRCColorItem* lastColor = charColors[0];
     int lastIndex = 0;
     for (int i = 1; i < inLineLength + 1; i++) {
@@ -89,7 +90,6 @@ QString CGRCParser::parseLogLine(const QList<CGRCConfItem>& confItems, const QSt
             continue;
         int from = lastIndex;
         int to   = i;
-        QString formattedSequence;
         if (!lastColor)
             formattedSequence = RESET_SEQUENCE + inLine.mid(lastIndex, i - lastIndex);
         else
