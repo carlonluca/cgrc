@@ -118,6 +118,10 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
                                QSL("Shows the version of the application."));
     QCommandLineOption optListLocations(QSL("list-locations"),
                                         QSL("Shows the location to use for the conf files."));
+    QCommandLineOption optSystemLocation(QSL("location-system"),
+                                         QSL("Prints the location to use for system-wide conf files."));
+    QCommandLineOption optUserLocation(QSL("location-user"),
+                                         QSL("Prints the location to use for user-wide conf files."));
     QCommandLineOption optListConfs(QSL("list-configurations"),
                                     QSL("List available configurations."));
     QCommandLineOption optConfFilePath(QSL("conf-path"),
@@ -141,6 +145,8 @@ void CGRCParser::parseCmd(const QCoreApplication* app, QCommandLineParser* parse
     parser->addOption(optListConfs);
     parser->addOption(optConfFilePath);
     parser->addOption(optInputFilePath);
+    parser->addOption(optSystemLocation);
+    parser->addOption(optUserLocation);
     parser->process(app->arguments());
 }
 
