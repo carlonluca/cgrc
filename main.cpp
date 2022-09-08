@@ -58,18 +58,18 @@ int main(int argc, char** argv)
 
     if (parser.isSet(QSL("list-locations"))) {
         qInfo() << "Locations on your system used by cgrc:";
-        qInfo() << "\tSystem location:" << CGRCConfManager::defaultSystemPath();
-        qInfo() << "\tUser location  :" << CGRCConfManager::defaultUserPath();
+        qInfo().noquote() << "\tSystem location:" << CGRCConfManager::defaultSystemPath();
+        qInfo().noquote() << "\tUser location  :" << CGRCConfManager::defaultUserPath();
         return 0;
     }
 
     if (parser.isSet(QSL("location-user"))) {
-        qInfo() << CGRCConfManager::defaultUserPath();
+        qInfo().noquote() << CGRCConfManager::defaultUserPath();
         return 0;
     }
 
     if (parser.isSet(QSL("location-system"))) {
-        qInfo() << CGRCConfManager::defaultSystemPath();
+        qInfo().noquote() << CGRCConfManager::defaultSystemPath();
         return 0;
     }
 
