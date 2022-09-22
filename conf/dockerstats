@@ -1,0 +1,8 @@
+desc=Formatter for docker stats
+===
+regexp=(CONTAINER ID)\s+(NAME)\s+(CPU %)\s+(MEM USAGE \/ LIMIT)\s+(MEM %)\s+(NET I\/O)\s+(BLOCK I\/O)\s+(PIDS)
+colours=default,underline,underline,underline,underline,underline,underline,underline,underline
+count=stop
+===
+regexp=([0-9a-f]+)\s+([^\s]+)\s+([\d.]+%)\s+([^\s]+\s+[^\s]+\s+[^\s]+)\s+([\d.]+%)\s+([^\s]+\s+[^\s]+\s+[^\s]+)\s+([^\s]+\s+[^\s]+\s+[^\s]+)\s+(\d+)
+colours=default,default,cyan,red underline,magenta,red underline,white,white,green

@@ -18,7 +18,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-project(cgrc VERSION 0.5.0 LANGUAGES CXX)
+project(cgrc VERSION 0.6.0 LANGUAGES CXX)
 add_definitions(-DAPP_VERSION="0.5.0")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
