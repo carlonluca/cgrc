@@ -1,7 +1,7 @@
 name: cgrc
-version: '0.6.0'
+version: '0.7.0'
 grade: devel
-base: core20
+base: core22
 confinement: strict
 summary: Configurable terminal text formatter
 description: |
@@ -29,8 +29,8 @@ parts:
     build-packages:
       - g++
       - cmake
-      - qt5-default
+      - qt6-base-dev
     stage-packages:
       - libc6
       - libstdc++6
-      - libqt5core5a
+      - libqt6core6
