@@ -1,0 +1,25 @@
+desc=Parser of the docker gitlab logs
+===
+regexp=(==>.*<==)
+colours=underline bold
+count=stop
+===
+regexp=.*\"severity\":\"INFO\".*
+colours=green
+count=stop
+===
+regexp=.*\"severity\":\"DEBUG\".*
+colours=blue
+count=stop
+===
+regexp=.*\"severity\":\"WARN\".*
+colours=yellow
+count=stop
+===
+regexp=.*\"severity\":\"ERROR\".*
+colours=red
+count=stop
+===
+regexp=.*\"severity\":\"FATAL\".*
+colours=red
+count=stop
