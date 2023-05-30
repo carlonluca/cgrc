@@ -22,11 +22,14 @@ variables:
 stages:
   - test_qt5
   - test_qt6
+  - test_rust
 
 Test_qt5:
   stage: test_qt5
+  tags:
+    - arm64
   image:
-    name: "carlonluca/qt-dev:5.15.2"
+    name: "carlonluca/qt-dev:5.15.2@sha256:ba3dccf48a1160704f94b7cd8b202d57a3ca814982f5c89eea4567ddc1e19ba4"
     entrypoint: [""]
   script:
     - mkdir build
@@ -37,8 +40,10 @@ Test_qt5:
 
 Test_qt6:
   stage: test_qt6
+  tags:
+    - arm64
   image:
-    name: "carlonluca/qt-dev:6.3.1_jammy"
+    name: "carlonluca/qt-dev:6.3.1_jammy@sha256:6563489e7eb458565ab6c4b50bc65ebc1f2f40ddc0c9e556fd2859aaa491dd75"
     entrypoint: [""]
   script:
     - mkdir build
@@ -46,3 +51,13 @@ Test_qt6:
     - cmake ..
     - make
     - ./cgrc --version
+
+Test_rust:
+  stage: test_rust
+  tags:
+    - arm64
+  image:
+    name: "rust:1.69.0@sha256:b7e0e2c6199fb5f309742c5eba637415c25ca2bed47fa5e80e274d4510ddfa3a"
+  script:
+    - cd cgrc-rust
+    - cargo build
