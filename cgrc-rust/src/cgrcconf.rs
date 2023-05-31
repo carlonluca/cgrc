@@ -89,4 +89,16 @@ impl CGRCConf {
             None
         }
     }
+
+    pub fn print_avail_confs() {
+        log::info!("Embedded configurations:");
+        Self::print_avail_embedded_confs();
+    }
+
+    pub fn print_avail_embedded_confs() {
+        let confs = load_confs();
+        for (key, value) in confs {
+            log::info!("\t{key}");
+        }
+    }
 }

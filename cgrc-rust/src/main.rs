@@ -27,7 +27,13 @@ use crate::cgrcconf::CGRCConf;
 #[command(author, version, about, long_about = None)]
 struct Cli {
     #[arg(long = "list-locations")]
-    pub list_locations: bool
+    pub list_locations: bool,
+    #[arg(long = "location-user")]
+    pub location_user: bool,
+    #[arg(long = "location-system")]
+    pub location_system: bool,
+    #[arg(long = "list-configurations")]
+    pub list_configurations: bool
 }
 
 fn main() {
@@ -50,5 +56,23 @@ fn main() {
         return;
     }
 
-    println!("Hello, world!");
+    if args.location_user {
+        if let Some(user_path) = CGRCConf::default_user_path() {
+            if let Some(user_path_string) = user_path.to_str() {
+                log::info!("{}", user_path_string);
+            }
+        }
+        
+        return;
+    }
+
+    if args.location_system {
+        log::info!("{}", CGRCConf::default_system_path());
+        return;
+    }
+
+    if args.list_configurations {
+        CGRCConf::print_avail_confs();
+        return;
+    }
 }
