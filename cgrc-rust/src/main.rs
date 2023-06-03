@@ -18,6 +18,7 @@
 
 pub mod cgrcconf;
 pub mod cgrcconfstorage;
+pub mod cgrc_data;
 
 use clap::Parser;
 

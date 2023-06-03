@@ -49,7 +49,7 @@ enum CGRC_Attrib {
 };
 
 enum CGRC_ResetAttrib {
-    CGRC_RESET_BRIGHT        = 22,
+    CGRC_RESET_BRIGHT        = 21,
     CGRC_RESET_DIM           = 22,
     CGRC_RESET_ITALIC        = 23,
     CGRC_RESET_UNDERLINE     = 24,
