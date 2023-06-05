@@ -17,10 +17,7 @@
  */
 
 use directories::ProjectDirs;
-use std::error;
-use std::fmt::format;
 use std::fs;
-use std::os::unix::thread::JoinHandleExt;
 use std::str;
 use std::path::{Path, PathBuf};
 use crate::cgrcconfstorage::load_confs;

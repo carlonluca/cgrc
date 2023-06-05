@@ -17,6 +17,8 @@
  */
 
 use std::collections::HashSet;
+use std::cmp::Eq;
+use regex::Regex;
 
 ///
 /// Values to set attribs to text.
@@ -245,4 +247,22 @@ impl CGRCColorItem {
         seq += "m";
         seq
     }
+}
+
+struct CGRCConfItem {
+    pub regex: Regex,
+    pub colors: Vec<CGRCColorItem>,
+    pub skip: bool,
+    pub countMode: CGRP_CountMode
+}
+
+impl PartialEq for CGRCConfItem {
+    fn eq(&self, other: &Self) -> bool {
+        return self.regex.as_str() == other.regex.as_str();
+    }
+}
+
+struct CGRCConf {
+    pub items: Vec<CGRCConfItem>,
+    pub description: String
 }
