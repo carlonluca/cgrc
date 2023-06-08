@@ -19,6 +19,7 @@
 pub mod cgrcconf;
 pub mod cgrcconfstorage;
 pub mod cgrcdata;
+pub mod cgrcparser;
 
 use clap::Parser;
 
@@ -34,7 +35,10 @@ struct Cli {
     #[arg(long = "location-system")]
     pub location_system: bool,
     #[arg(long = "list-configurations")]
-    pub list_configurations: bool
+    pub list_configurations: bool,
+    #[arg(long = "conf-path")]
+    pub conf_path: bool,
+    pub conf: String
 }
 
 fn main() {
@@ -75,5 +79,11 @@ fn main() {
     if args.list_configurations {
         CGRCConf::print_avail_confs();
         return;
+    }
+
+    let is_local_path = args.conf_path;
+    let conf_path = CGRCConf::load_conf(&args.conf, is_local_path);
+    if let Some(conf_path_value) = conf_path {
+        log::info!("Path: {conf_path_value}")
     }
 }
