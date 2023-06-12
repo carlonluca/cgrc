@@ -22,9 +22,9 @@ use std::str;
 use std::path::{Path, PathBuf};
 use crate::cgrcconfstorage::load_confs;
 
-pub struct CGRCConf {}
+pub struct CGRCConfManager {}
 
-impl CGRCConf {
+impl CGRCConfManager {
     pub fn default_system_path() -> &'static str {
         "/etc/cgrc"
     }

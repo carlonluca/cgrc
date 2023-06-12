@@ -23,7 +23,7 @@ use regex::Regex;
 ///
 /// Values to set attribs to text.
 /// 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum CGRC_Attrib {
     CGRC_NONE          = -1,
     CGRC_RESET         = 0,
@@ -122,7 +122,7 @@ pub enum LC_LogColor {
     LC_FORG_COL_DEFAULT = 30 + CGRC_Color::LC_DEFAULT as isize
 }
 
-static COLORS_ATTRS: phf::Map<&'static str, CGRC_Attrib> = phf::phf_map! {
+pub static COLORS_ATTRS: phf::Map<&'static str, CGRC_Attrib> = phf::phf_map! {
     "none" => CGRC_Attrib::CGRC_NONE,
     "unchanged" => CGRC_Attrib::CGRC_NONE,
     "default" => CGRC_Attrib::CGRC_RESET,
@@ -153,7 +153,7 @@ pub fn colors_attr_clear(attr: &CGRC_Attrib) -> CGRC_ResetAttrib {
     };
 }
 
-static COLORS_BACK: phf::Map<&'static str, LC_BackColor> = phf::phf_map! {
+pub static COLORS_BACK: phf::Map<&'static str, LC_BackColor> = phf::phf_map! {
     "on_black" => LC_BackColor::LC_BACK_COL_BLACK,
     "on_red" => LC_BackColor::LC_BACK_COL_RED,
     "on_green" => LC_BackColor::LC_BACK_COL_GREEN,
@@ -172,7 +172,7 @@ static COLORS_BACK: phf::Map<&'static str, LC_BackColor> = phf::phf_map! {
     "on_bright_white" => LC_BackColor::LC_BACK_BRIGHT_COL_WHITE,
 };
 
-static COLORS_FORG: phf::Map<&'static str, LC_LogColor> = phf::phf_map! {
+pub static COLORS_FORG: phf::Map<&'static str, LC_LogColor> = phf::phf_map! {
     "black" => LC_LogColor::LC_FORG_COL_BLACK,
     "red" => LC_LogColor::LC_FORG_COL_RED,
     "green" => LC_LogColor::LC_FORG_COL_GREEN,
@@ -194,7 +194,7 @@ static COLORS_FORG: phf::Map<&'static str, LC_LogColor> = phf::phf_map! {
 ///
 /// Item containing a color for a line.
 ///
-struct CGRCColorItem {
+pub struct CGRCColorItem {
     pub attrs: HashSet<CGRC_Attrib>,
     pub forg: LC_LogColor,
     pub back: LC_BackColor,
@@ -206,7 +206,7 @@ impl CGRCColorItem {
     ///
     /// Creates a new color item for a line.
     /// 
-    pub fn new(&self, attrs: HashSet<CGRC_Attrib>, forg: LC_LogColor, back: LC_BackColor) -> CGRCColorItem {
+    pub fn new(attrs: HashSet<CGRC_Attrib>, forg: LC_LogColor, back: LC_BackColor) -> CGRCColorItem {
         CGRCColorItem {
             attrs: attrs,
             forg: forg,
@@ -219,7 +219,7 @@ impl CGRCColorItem {
     ///
     /// Builds the escape sequence.
     /// 
-    fn build_escape_seq(&self) -> String {
+    pub fn build_escape_seq(&self) -> String {
         let mut seq = format!("{}[{};{}", 0x1b, self.forg as i32, self.back as i32);
         for attr in &self.attrs {
             seq += &format!(";{}", *attr as u32);
@@ -231,7 +231,7 @@ impl CGRCColorItem {
     ///
     /// Builds the clear sequence.
     /// 
-    fn build_clear_seq(&self) -> String {
+    pub fn build_clear_seq(&self) -> String {
         if self.attrs.is_empty() {
             return String::new();
         }
@@ -249,20 +249,29 @@ impl CGRCColorItem {
     }
 }
 
-struct CGRCConfItem {
-    pub regex: Regex,
-    pub colors: Vec<CGRCColorItem>,
-    pub skip: bool,
-    pub countMode: CGRP_CountMode
+pub struct CGRCConfItem {
+    pub regex: Option<Regex>,
+    pub colors: Option<Vec<CGRCColorItem>>,
+    pub skip: Option<bool>,
+    pub count_mode: Option<CGRP_CountMode>
 }
 
 impl PartialEq for CGRCConfItem {
     fn eq(&self, other: &Self) -> bool {
-        return self.regex.as_str() == other.regex.as_str();
+        return match &self.regex {
+            None => match other.regex {
+                None => true,
+                Some(_) => false
+            },
+            Some(r1) => match &other.regex {
+                None => false,
+                Some(r2) => r1.as_str() == r2.as_str()
+            }
+        }
     }
 }
 
-struct CGRCConf {
+pub struct CGRCConf {
     pub items: Vec<CGRCConfItem>,
-    pub description: String
+    pub description: Option<String>
 }
