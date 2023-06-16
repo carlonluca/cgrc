@@ -41,7 +41,7 @@ pub enum CGRC_Attrib {
 ///
 /// Values to remove attribs to text.
 ///
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CGRC_ResetAttrib {
     CGRC_RESET_NONE          = 0,
     CGRC_RESET_BRIGHT        = 21,
@@ -58,6 +58,7 @@ pub enum CGRC_ResetAttrib {
 ///
 /// Values to set count mode.
 /// 
+#[derive(Clone, PartialEq, Eq)]
 pub enum CGRP_CountMode {
     CGRC_COUNT_ONCE,
     CGRC_COUNT_MORE,
@@ -194,12 +195,13 @@ pub static COLORS_FORG: phf::Map<&'static str, LC_LogColor> = phf::phf_map! {
 ///
 /// Item containing a color for a line.
 ///
+#[derive(Clone, Debug)]
 pub struct CGRCColorItem {
     pub attrs: HashSet<CGRC_Attrib>,
     pub forg: LC_LogColor,
     pub back: LC_BackColor,
-    escape_seq: String,
-    clear_seq: String
+    pub escape_seq: String,
+    pub clear_seq: String
 }
 
 impl CGRCColorItem {
@@ -234,28 +236,41 @@ impl CGRCColorItem {
     /// Builds the clear sequence.
     /// 
     fn build_clear_seq(attrs: &HashSet<CGRC_Attrib>, forg: &LC_LogColor, back: &LC_BackColor) -> String {
-        if attrs.is_empty() {
-            return String::new();
-        }
+        log::warn!("1");
+        log::warn!("2");
         let mut seq = format!(
             "{}[{};{}",
             0x1b,
             LC_LogColor::LC_FORG_COL_DEFAULT as u32,
             LC_BackColor::LC_BACK_COL_DEFAULT as u32
         );
+        log::warn!("3");
         for attr in attrs {
             seq += &format!(";{}", colors_attr_clear(&attr) as u32);
         }
+        log::warn!("4");
         seq += "m";
         seq
     }
 }
 
+#[derive(Clone)]
 pub struct CGRCConfItem {
     pub regex: Option<Regex>,
-    pub colors: Option<Vec<CGRCColorItem>>,
+    pub colors: Vec<CGRCColorItem>,
     pub skip: Option<bool>,
     pub count_mode: Option<CGRP_CountMode>
+}
+
+impl CGRCConfItem {
+    pub fn new() -> CGRCConfItem {
+        CGRCConfItem {
+            regex: None,
+            colors: vec![],
+            skip: None,
+            count_mode: None
+        }
+    }
 }
 
 impl PartialEq for CGRCConfItem {

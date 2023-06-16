@@ -21,8 +21,7 @@ pub mod cgrcconfstorage;
 pub mod cgrcdata;
 pub mod cgrcparser;
 
-use std::io::{BufRead, Cursor, BufReader};
-
+use std::io::{BufRead, Cursor, BufReader, stdin};
 use cgrcparser::CGRCParser;
 use clap::Parser;
 
@@ -41,6 +40,8 @@ struct Cli {
     pub list_configurations: bool,
     #[arg(long = "conf-path")]
     pub conf_path: bool,
+    #[arg(long = "debug")]
+    pub debug: bool,
     pub conf: String
 }
 
@@ -94,4 +95,16 @@ fn main() {
     let cursor = Cursor::new(conf_data.unwrap());
     let reader = BufReader::new(cursor);
     let conf = CGRCParser::parse_conf_lines(reader);
+    let conf_items = &conf.items;
+    let stdin = stdin();
+    log::warn!("Conf: {}", conf_items.len());
+    for line in stdin.lock().lines() {
+        // TODO: handle errors here.
+        let line = line.unwrap();
+        let formatted = CGRCParser::parse_log_line(&conf_items, &line);
+        println!("{}", line);
+        if let Some(formatted) = formatted {
+            println!("{}", formatted);
+        }
+    }
 }
