@@ -20,30 +20,13 @@ pub mod cgrcconfmanager;
 pub mod cgrcconfstorage;
 pub mod cgrcdata;
 pub mod cgrcparser;
+pub mod cgrccli;
 
 use std::io::{BufRead, Cursor, BufReader, stdin};
 use cgrcparser::CGRCParser;
+use cgrcconfmanager::CGRCConfManager;
+use cgrccli::Cli;
 use clap::Parser;
-
-use crate::cgrcconfmanager::CGRCConfManager;
-
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    #[arg(long = "list-locations")]
-    pub list_locations: bool,
-    #[arg(long = "location-user")]
-    pub location_user: bool,
-    #[arg(long = "location-system")]
-    pub location_system: bool,
-    #[arg(long = "list-configurations")]
-    pub list_configurations: bool,
-    #[arg(long = "conf-path")]
-    pub conf_path: bool,
-    #[arg(long = "debug")]
-    pub debug: bool,
-    pub conf: String
-}
 
 fn main() {
     unsafe {
