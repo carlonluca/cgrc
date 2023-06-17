@@ -180,10 +180,9 @@ impl CGRCParser {
     pub fn parse_log_line(conf_items: &Vec<CGRCConfItem>, in_line: &String) -> Option<String> {
         let in_line_length = in_line.len();
         let mut char_colors: Vec<Option<&CGRCColorItem>> = vec![None; in_line_length];
-
         let mut stop_processing = false;
         for conf_item in conf_items {
-            log::warn!("Conf:");
+            log::debug!("Testing conf: {:?}", conf_item);
             if stop_processing {
                 break;
             }

@@ -58,7 +58,7 @@ pub enum CGRC_ResetAttrib {
 ///
 /// Values to set count mode.
 /// 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum CGRP_CountMode {
     CGRC_COUNT_ONCE,
     CGRC_COUNT_MORE,
@@ -254,7 +254,7 @@ impl CGRCColorItem {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct CGRCConfItem {
     pub regex: Option<Regex>,
     pub colors: Vec<CGRCColorItem>,
