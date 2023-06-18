@@ -80,11 +80,14 @@ fn main() {
     let conf = CGRCParser::parse_conf_lines(reader);
     let conf_items = &conf.items;
     let stdin = stdin();
-    log::warn!("Conf: {}", conf_items.len());
     for line in stdin.lock().lines() {
         // TODO: handle errors here.
         let line = line.unwrap();
-        let formatted = CGRCParser::parse_log_line(&conf_items, &line);
+        let formatted = CGRCParser::parse_log_line(
+            &conf_items,
+            &line,
+            args.debug
+        );
         println!("{}", line);
         if let Some(formatted) = formatted {
             println!("{}", formatted);

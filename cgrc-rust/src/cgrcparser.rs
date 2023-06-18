@@ -17,6 +17,7 @@
  */
 
 use std::{process, fs::File, io::{BufReader, BufRead}, collections::HashSet};
+use std::ptr;
 use core::ptr::addr_of;
 use libc::IN_CLOEXEC;
 use regex::Regex;
@@ -177,19 +178,21 @@ impl CGRCParser {
     ///
     /// Parses the line.
     /// 
-    pub fn parse_log_line(conf_items: &Vec<CGRCConfItem>, in_line: &String) -> Option<String> {
+    pub fn parse_log_line(conf_items: &Vec<CGRCConfItem>, in_line: &String, debug: bool) -> Option<String> {
         let in_line_length = in_line.len();
-        let mut char_colors: Vec<Option<&CGRCColorItem>> = vec![None; in_line_length];
+        let mut char_colors: Vec<*const CGRCColorItem> = vec![ptr::null(); in_line_length];
         let mut stop_processing = false;
         for conf_item in conf_items {
-            log::debug!("Testing conf: {:?}", conf_item);
+            if debug {
+                log::debug!("Testing conf: {:?}", conf_item);
+            }
+            
             if stop_processing {
                 break;
             }
 
             let regex = conf_item.regex.as_ref().unwrap();
             if let Some(captures) = regex.captures(&in_line) {
-                log::warn!("Capture:");
                 if conf_item.skip.unwrap_or(false) {
                     return None;
                 }
@@ -198,7 +201,11 @@ impl CGRCParser {
                     .as_ref()
                     .unwrap_or(&CGRP_CountMode::CGRC_COUNT_STOP)
                     .clone() == CGRP_CountMode::CGRC_COUNT_STOP;
-                for i in 1..captures.len() {
+                for i in 0..captures.len() {
+                    if debug {
+                        log::debug!("Captured: {:?}", captures.get(i).unwrap().as_str());
+                    }
+
                     let capture = match captures.get(i) {
                         None => continue,
                         Some(v) => v
@@ -210,7 +217,7 @@ impl CGRCParser {
                             break;
                         }
                         if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
-                            char_colors[j] = Some(&conf_item.colors[i]);
+                            char_colors[j] = &(conf_item.colors[i]);
                             log::warn!("Color: {:?}", conf_item.colors[i]);
                         }
                     }
@@ -220,24 +227,27 @@ impl CGRCParser {
 
         let mut formatted_line = String::new();
         let mut formatted_seq;
-        let mut last_color = addr_of!(char_colors[0]);
+        let mut last_color = char_colors[0];
         let mut last_index = 0;
-        for i in 1..=in_line_length {
-            if addr_of!(char_colors[i]) == last_color && i != in_line_length {
+        for i in 1..in_line_length {
+            if char_colors[i] == last_color && i != in_line_length {
                 continue;
             }
-            let v_last_color = unsafe { *last_color };
-            if v_last_color.is_none() {
+            if last_color.is_null() {
                 formatted_seq = "\x1b[0m".to_string() + &in_line[last_index..i].to_owned();
             }
             else {
-                formatted_seq = v_last_color.unwrap().escape_seq.to_owned() + &in_line[last_index..i].to_owned() + &v_last_color.unwrap().clear_seq;
+                unsafe {
+                    formatted_seq = (*last_color).escape_seq.to_owned()
+                    + &in_line[last_index..i].to_owned()
+                    + (*last_color).clear_seq.as_str();
+                }
             }
 
             formatted_line += &formatted_seq;
 
             last_index = i;
-            last_color = addr_of!(char_colors[i]);
+            last_color = char_colors[i];
         }
 
         formatted_line += &"\x1b[0m".to_string();
