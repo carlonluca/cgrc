@@ -18,8 +18,6 @@
 
 use std::{process, fs::File, io::{BufReader, BufRead}, collections::HashSet};
 use std::ptr;
-use core::ptr::addr_of;
-use libc::IN_CLOEXEC;
 use regex::Regex;
 use crate::cgrcdata::{
     CGRCColorItem,
@@ -104,7 +102,7 @@ impl CGRCParser {
         }
 
         if lline.starts_with("colours=") {
-            item.colors.append(&mut CGRCParser::parse_colors(&lline));
+            item.colors.append(&mut CGRCParser::parse_colors(&lline.replace("colours=", "")));
             return false;
         }
 
@@ -153,6 +151,7 @@ impl CGRCParser {
             let mut forg = LC_LogColor::LC_FORG_COL_DEFAULT;
             let mut back: LC_BackColor = LC_BackColor::LC_BACK_COL_DEFAULT;
             for option in options {
+                log::warn!("Option: {}", option);
                 let lower_option = option.to_lowercase();
                 if COLORS_ATTRS.contains_key(option) {
                     attrs.insert(COLORS_ATTRS.get(&lower_option).unwrap().clone());
@@ -205,6 +204,9 @@ impl CGRCParser {
                     if debug {
                         log::debug!("Captured: {:?}", captures.get(i).unwrap().as_str());
                     }
+                    if i >= conf_item.colors.len() {
+                        break;
+                    }
 
                     let capture = match captures.get(i) {
                         None => continue,
@@ -213,9 +215,6 @@ impl CGRCParser {
                     let from = capture.start();
                     let to   = capture.end();
                     for j in from..to {
-                        if i >= conf_item.colors.len() {
-                            break;
-                        }
                         if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
                             char_colors[j] = &(conf_item.colors[i]);
                             log::warn!("Color: {:?}", conf_item.colors[i]);
@@ -239,8 +238,8 @@ impl CGRCParser {
             else {
                 unsafe {
                     formatted_seq = (*last_color).escape_seq.to_owned()
-                    + &in_line[last_index..i].to_owned()
-                    + (*last_color).clear_seq.as_str();
+                        + &in_line[last_index..i].to_owned()
+                        + (*last_color).clear_seq.as_str();
                 }
             }
 

@@ -224,9 +224,13 @@ impl CGRCColorItem {
     /// Builds the escape sequence.
     /// 
     fn build_escape_seq(attrs: &HashSet<CGRC_Attrib>, forg: &LC_LogColor, back: &LC_BackColor) -> String {
-        let mut seq = format!("{}[{};{}", 0x1b, *forg as i32, *back as i32);
+        let mut seq = format!("{}[{};{}",
+            0x1b as char,
+            *forg as u8,
+            *back as u8
+        );
         for attr in attrs {
-            seq += &format!(";{}", *attr as u32);
+            seq += &format!(";{}", *attr as u8 as char);
         }
         seq += "m";
         seq
@@ -236,19 +240,15 @@ impl CGRCColorItem {
     /// Builds the clear sequence.
     /// 
     fn build_clear_seq(attrs: &HashSet<CGRC_Attrib>, forg: &LC_LogColor, back: &LC_BackColor) -> String {
-        log::warn!("1");
-        log::warn!("2");
         let mut seq = format!(
             "{}[{};{}",
-            0x1b,
-            LC_LogColor::LC_FORG_COL_DEFAULT as u32,
-            LC_BackColor::LC_BACK_COL_DEFAULT as u32
+            0x1b as char,
+            LC_LogColor::LC_FORG_COL_DEFAULT as u8,
+            LC_BackColor::LC_BACK_COL_DEFAULT as u8
         );
-        log::warn!("3");
         for attr in attrs {
-            seq += &format!(";{}", colors_attr_clear(&attr) as u32);
+            seq += &format!(";{}", colors_attr_clear(&attr) as u8);
         }
-        log::warn!("4");
         seq += "m";
         seq
     }

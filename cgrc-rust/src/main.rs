@@ -88,7 +88,6 @@ fn main() {
             &line,
             args.debug
         );
-        println!("{}", line);
         if let Some(formatted) = formatted {
             println!("{}", formatted);
         }
