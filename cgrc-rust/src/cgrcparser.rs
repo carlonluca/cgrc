@@ -71,6 +71,7 @@ impl CGRCParser {
                 Ok(line) => {
                     if CGRCParser::parse_conf_line(&line, &mut conf,  &mut item) {
                         conf.items.push(item.clone());
+                        item = CGRCConfItem::new();
                     }
                 }
             }
@@ -151,7 +152,6 @@ impl CGRCParser {
             let mut forg = LC_LogColor::LC_FORG_COL_DEFAULT;
             let mut back: LC_BackColor = LC_BackColor::LC_BACK_COL_DEFAULT;
             for option in options {
-                log::warn!("Option: {}", option);
                 let lower_option = option.to_lowercase();
                 if COLORS_ATTRS.contains_key(option) {
                     attrs.insert(COLORS_ATTRS.get(&lower_option).unwrap().clone());
@@ -201,11 +201,11 @@ impl CGRCParser {
                     .unwrap_or(&CGRP_CountMode::CGRC_COUNT_STOP)
                     .clone() == CGRP_CountMode::CGRC_COUNT_STOP;
                 for i in 0..captures.len() {
-                    if debug {
-                        log::debug!("Captured: {:?}", captures.get(i).unwrap().as_str());
-                    }
                     if i >= conf_item.colors.len() {
                         break;
+                    }
+                    if debug {
+                        log::debug!("Captured: {:?}", captures.get(i).unwrap().as_str());
                     }
 
                     let capture = match captures.get(i) {
@@ -217,7 +217,9 @@ impl CGRCParser {
                     for j in from..to {
                         if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
                             char_colors[j] = &(conf_item.colors[i]);
-                            log::warn!("Color: {:?}", conf_item.colors[i]);
+                            if debug {
+                                log::warn!("Color: {:?}", conf_item.colors[i]);
+                            }
                         }
                     }
                 }
@@ -228,12 +230,12 @@ impl CGRCParser {
         let mut formatted_seq;
         let mut last_color = char_colors[0];
         let mut last_index = 0;
-        for i in 1..in_line_length {
-            if char_colors[i] == last_color && i != in_line_length {
+        for i in 1..=in_line_length {
+            if i != in_line_length && char_colors[i] == last_color {
                 continue;
             }
             if last_color.is_null() {
-                formatted_seq = "\x1b[0m".to_string() + &in_line[last_index..i].to_owned();
+                formatted_seq = "\x1b[0m".to_string().to_string() + &in_line[last_index..i].to_owned();
             }
             else {
                 unsafe {
@@ -245,8 +247,10 @@ impl CGRCParser {
 
             formatted_line += &formatted_seq;
 
-            last_index = i;
-            last_color = char_colors[i];
+            if i != in_line_length {
+                last_index = i;
+                last_color = char_colors[i];
+            }
         }
 
         formatted_line += &"\x1b[0m".to_string();
