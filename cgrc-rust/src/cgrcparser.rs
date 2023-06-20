@@ -244,7 +244,7 @@ impl CGRCParser {
                 unsafe {
                     formatted_seq = (*last_color).escape_seq.to_owned()
                         + &in_line[last_index..i].to_owned()
-                        + (*last_color).clear_seq.as_str();
+                        + "\x1b[0m".to_string().as_str();
                 }
             }
 
