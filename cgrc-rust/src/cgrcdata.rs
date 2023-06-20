@@ -210,7 +210,7 @@ impl CGRCColorItem {
     /// 
     pub fn new(attrs: HashSet<CGRC_Attrib>, forg: LC_LogColor, back: LC_BackColor) -> CGRCColorItem {
         let escape_seq = CGRCColorItem::build_escape_seq(&attrs, &forg, &back);
-        let clear_seq = CGRCColorItem::build_clear_seq(&attrs, &forg, &back);
+        let clear_seq = CGRCColorItem::build_clear_seq(&attrs);
         CGRCColorItem {
             attrs,
             forg,
@@ -230,7 +230,7 @@ impl CGRCColorItem {
             *back as u8
         );
         for attr in attrs {
-            seq += &format!(";{}", *attr as u8 as char);
+            seq += &format!(";{}", *attr as u8);
         }
         seq += "m";
         seq
@@ -239,7 +239,7 @@ impl CGRCColorItem {
     ///
     /// Builds the clear sequence.
     /// 
-    fn build_clear_seq(attrs: &HashSet<CGRC_Attrib>, forg: &LC_LogColor, back: &LC_BackColor) -> String {
+    fn build_clear_seq(attrs: &HashSet<CGRC_Attrib>) -> String {
         let mut seq = format!(
             "{}[{};{}",
             0x1b as char,
