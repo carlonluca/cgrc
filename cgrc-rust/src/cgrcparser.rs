@@ -196,10 +196,13 @@ impl CGRCParser {
                     return None;
                 }
 
-                stop_processing = conf_item.count_mode
-                    .as_ref()
-                    .unwrap_or(&CGRP_CountMode::CGRC_COUNT_STOP)
-                    .clone() == CGRP_CountMode::CGRC_COUNT_STOP;
+                stop_processing = match &conf_item.count_mode {
+                    None => false,
+                    Some(v) => {
+                        v == &CGRP_CountMode::CGRC_COUNT_STOP
+                    }
+                };
+                
                 for i in 0..captures.len() {
                     if i >= conf_item.colors.len() {
                         break;
