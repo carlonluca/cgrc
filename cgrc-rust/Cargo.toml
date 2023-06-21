@@ -1,9 +1,30 @@
+#
+# This file is part of cgrc.
+#
+# Copyright (c) 2023 Luca Carlon
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
 [package]
-name = "cgrc-rust"
+name = "cgrc"
 version = "2.0.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "GPL-3.0"
+description = "Configurable terminal text formatter"
+homepage = "https://bugfreeblog.duckdns.org/2022/09/cgrc-formatting-output-in-the-terminal.html"
+repository = "https://github.com/carlonluca/cgrc"
+readme = "../README.md"
 
 [dependencies]
 libc = "0.2"
