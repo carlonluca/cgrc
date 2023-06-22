@@ -18,7 +18,7 @@
 
 use std::collections::HashSet;
 use std::cmp::Eq;
-use regex::Regex;
+use fancy_regex::Regex;
 
 ///
 /// Values to set attribs to text.

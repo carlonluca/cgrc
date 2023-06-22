@@ -109,8 +109,19 @@ impl CGRCConfManager {
     /// 
     pub fn print_avail_embedded_confs() {
         let confs = load_confs();
-        for (key, _) in confs {
-            println!("\t{key}");
+        for (key, content) in confs {
+            let conf_string = match str::from_utf8(content) {
+                Err(_) => {
+                    log::warn!("Failed to parse conf file");
+                    continue;
+                },
+                Ok(s) => s
+            };
+            let conf = CGRCParser::parse_conf_string(conf_string.to_string());
+            println!("\t{key} -> {}", match conf.description {
+                None => String::from("?"),
+                Some(v) => v
+            });
         }
     }
 

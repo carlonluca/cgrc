@@ -18,7 +18,7 @@
 
 use std::{process, fs::File, io::{BufReader, BufRead, Cursor}, collections::HashSet};
 use std::ptr;
-use regex::Regex;
+use fancy_regex::Regex;
 use crate::cgrcdata::{
     CGRCColorItem,
     CGRP_CountMode,
@@ -200,7 +200,7 @@ impl CGRCParser {
             }
 
             let regex = conf_item.regex.as_ref().unwrap();
-            if let Some(captures) = regex.captures(&in_line) {
+            if let Ok(Some(captures)) = regex.captures(&in_line) {
                 if conf_item.skip.unwrap_or(false) {
                     return None;
                 }
