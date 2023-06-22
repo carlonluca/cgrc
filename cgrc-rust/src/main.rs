@@ -83,9 +83,7 @@ fn main() {
         return;
     }
 
-    let cursor = Cursor::new(conf_data.unwrap());
-    let reader = BufReader::new(cursor);
-    let conf = CGRCParser::parse_conf_lines(reader);
+    let conf = CGRCParser::parse_conf_string(conf_data.unwrap());
     let conf_items = &conf.items;
     let stdin = stdin();
     for line in stdin.lock().lines() {

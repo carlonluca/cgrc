@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::{process, fs::File, io::{BufReader, BufRead}, collections::HashSet};
+use std::{process, fs::File, io::{BufReader, BufRead, Cursor}, collections::HashSet};
 use std::ptr;
 use regex::Regex;
 use crate::cgrcdata::{
@@ -78,6 +78,15 @@ impl CGRCParser {
         }
 
         conf
+    }
+
+    ///
+    /// Parses a configuration from a string.
+    /// 
+    pub fn parse_conf_string(conf: String) -> CGRCConf {
+        let cursor = Cursor::new(conf);
+        let reader = BufReader::new(cursor);
+        return CGRCParser::parse_conf_lines(reader);
     }
 
     // Private portion

@@ -21,6 +21,7 @@ use std::fs;
 use std::str;
 use std::path::{Path, PathBuf};
 use crate::cgrcconfstorage::load_confs;
+use crate::cgrcparser::CGRCParser;
 
 pub struct CGRCConfManager {}
 
@@ -87,15 +88,43 @@ impl CGRCConfManager {
         }
     }
 
+    ///
+    /// Prints the available system confs to stdout.
+    /// 
     pub fn print_avail_confs() {
         println!("Embedded configurations:");
         Self::print_avail_embedded_confs();
+
+        println!("");
+        println!("User configurations:");
+        Self::print_avail_user_confs();
+
+        println!("");
+        println!("System configurations:");
+        Self::print_avail_system_confs();
     }
 
+    ///
+    /// Prints embedded configurations to stdout.
+    /// 
     pub fn print_avail_embedded_confs() {
         let confs = load_confs();
-        for (key, value) in confs {
+        for (key, _) in confs {
             println!("\t{key}");
         }
+    }
+
+    ///
+    /// Prints user configurations to stdout.
+    /// 
+    pub fn print_avail_user_confs() {
+        
+    }
+
+    ///
+    /// Prints system-wide configurations to stdout.
+    /// 
+    pub fn print_avail_system_confs() {
+        
     }
 }
