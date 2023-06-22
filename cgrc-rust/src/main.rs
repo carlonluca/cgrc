@@ -37,11 +37,11 @@ fn main() {
 
     let args = Cli::parse();
     if args.list_locations {
-        log::info!("Locations on your system used by cgrc:");
-        log::info!("\tSystem location: {}", CGRCConfManager::default_system_path());
+        println!("Locations on your system used by cgrc:");
+        println!("\tSystem location: {}", CGRCConfManager::default_system_path());
         if let Some(user_path) = CGRCConfManager::default_user_path() {
             if let Some(user_path_string) = user_path.to_str() {
-                log::info!("\tUser location  : {}", user_path_string);
+                println!("\tUser location  : {}", user_path_string);
             }
         }
 
@@ -51,7 +51,7 @@ fn main() {
     if args.location_user {
         if let Some(user_path) = CGRCConfManager::default_user_path() {
             if let Some(user_path_string) = user_path.to_str() {
-                log::info!("{}", user_path_string);
+                println!("{}", user_path_string);
             }
         }
         
@@ -59,7 +59,7 @@ fn main() {
     }
 
     if args.location_system {
-        log::info!("{}", CGRCConfManager::default_system_path());
+        println!("{}", CGRCConfManager::default_system_path());
         return;
     }
 
@@ -68,10 +68,18 @@ fn main() {
         return;
     }
 
+    let args_conf = match args.conf {
+        None => {
+            println!("Missing argument");
+            return;
+        },
+        Some(conf) => conf
+    };
+
     let is_local_path = args.conf_path;
-    let conf_data = CGRCConfManager::load_conf(&args.conf, is_local_path);
+    let conf_data = CGRCConfManager::load_conf(&args_conf, is_local_path);
     if None == conf_data {
-        log::error!("Failed to find conf file: {0}", args.conf);
+        println!("Failed to find conf file: {0}", args_conf);
         return;
     }
 

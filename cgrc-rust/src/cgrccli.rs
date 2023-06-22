@@ -33,5 +33,5 @@ pub struct Cli {
     pub conf_path: bool,
     #[arg(long = "debug")]
     pub debug: bool,
-    pub conf: String
+    pub conf: Option<String>
 }
