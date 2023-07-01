@@ -22,7 +22,7 @@ pub mod cgrcdata;
 pub mod cgrcparser;
 pub mod cgrccli;
 
-use std::io::{BufRead, Cursor, BufReader, stdin};
+use std::io::{BufRead, stdin};
 use cgrcparser::CGRCParser;
 use cgrcconfmanager::CGRCConfManager;
 use cgrccli::Cli;
