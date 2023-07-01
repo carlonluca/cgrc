@@ -144,6 +144,9 @@ impl CGRCConfManager {
         }
     }
 
+    ///
+    /// Print available configurations in the path.
+    /// 
     fn print_avail_confs_in_path(path: &String) {
         let read_dir = match fs::read_dir(path) {
             Err(_) => return,
