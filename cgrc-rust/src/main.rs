@@ -40,9 +40,7 @@ fn main() {
         println!("Locations on your system used by cgrc:");
         println!("\tSystem location: {}", CGRCConfManager::default_system_path());
         if let Some(user_path) = CGRCConfManager::default_user_path() {
-            if let Some(user_path_string) = user_path.to_str() {
-                println!("\tUser location  : {}", user_path_string);
-            }
+            println!("\tUser location  : {}", user_path);
         }
 
         return;
@@ -50,9 +48,7 @@ fn main() {
 
     if args.location_user {
         if let Some(user_path) = CGRCConfManager::default_user_path() {
-            if let Some(user_path_string) = user_path.to_str() {
-                println!("{}", user_path_string);
-            }
+            println!("{}", user_path);
         }
         
         return;

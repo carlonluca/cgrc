@@ -30,9 +30,11 @@ impl CGRCConfManager {
         "/etc/cgrc"
     }
 
-    pub fn default_user_path() -> Option<PathBuf> {
+    pub fn default_user_path() -> Option<String> {
         if let Some(proj_dirs) = ProjectDirs::from("com", "luke", "cgrc") {
-            return Some(proj_dirs.config_dir().to_path_buf());
+            if let Some(path) = proj_dirs.config_dir().to_str() {
+                return Some(path.to_string());
+            }
         }
 
         return None;
@@ -67,7 +69,7 @@ impl CGRCConfManager {
             }
 
             if let Some(user_path) = Self::default_user_path() {
-                let proposed_path = Path::new(user_path.as_path())
+                let proposed_path = PathBuf::from(user_path)
                     .join(conf);
                 if proposed_path.as_path().exists() {
                     if let Some(proposed_path_string) = proposed_path.as_path().to_str() {
@@ -129,13 +131,42 @@ impl CGRCConfManager {
     /// Prints user configurations to stdout.
     /// 
     pub fn print_avail_user_confs() {
-        
+        Self::print_avail_confs_in_path(&Self::default_system_path().to_string());
     }
 
     ///
     /// Prints system-wide configurations to stdout.
     /// 
     pub fn print_avail_system_confs() {
-        
+        match Self::default_user_path() {
+            None => return,
+            Some(v) => Self::print_avail_confs_in_path(&v)
+        }
+    }
+
+    fn print_avail_confs_in_path(path: &String) {
+        let read_dir = match fs::read_dir(path) {
+            Err(_) => return,
+            Ok(v) => v
+        };
+        for file in read_dir {
+            let item = match file {
+                Err(e) => {
+                    log::warn!("Failed to list file: {}", e.to_string());
+                    continue;
+                },
+                Ok(f) => f
+            };
+            let path = PathBuf::from(path).join(item.file_name());
+            let path_string = match path.to_str() {
+                None => continue,
+                Some(v) => v
+            };
+            let conf = CGRCParser::parse_conf(&path_string.to_string());
+            println!("\t{:?} -> {:?}", path, match conf.description {
+                None => String::from("?"),
+                Some(v) => v
+            });
+        }
     }
 }
