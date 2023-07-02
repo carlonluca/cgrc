@@ -61,6 +61,9 @@ Build:
   stage: build_rust
   image:
     name: "rust:1.69"
+  artifacts:
+    paths:
+      - cgrc-dist
   script:
     - cd cgrc-rust
     - cargo build --release --target=x86_64-unknown-linux-musl
