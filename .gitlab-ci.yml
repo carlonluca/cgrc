@@ -63,7 +63,8 @@ Build:
     name: "rust:1.69"
   artifacts:
     paths:
-      - cgrc-dist
+      - cgrc-dist/x86_64-unknown-linux-musl/cgrc
+    untracked: true
   script:
     - cd cgrc-rust
     - rustup target add x86_64-unknown-linux-musl
