@@ -23,6 +23,7 @@ stages:
   - test_qt5
   - test_qt6
   - test_rust
+  - build_rust
 
 Test_qt5:
   stage: test_qt5
@@ -55,3 +56,13 @@ Test_rust:
   script:
     - cd cgrc-rust
     - cargo build
+
+Build:
+  stage: build_rust
+  image:
+    name: "rust:1.69"
+  script:
+    - cd cgrc-rust
+    - cargo build --release --target=x86_64-unknown-linux-musl
+    - mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
+    - mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
