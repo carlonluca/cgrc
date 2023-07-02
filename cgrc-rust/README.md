@@ -49,17 +49,18 @@ cgrc can print a summary of all the configurations currently available:
 
 ```
 Embedded configurations:
-         :/conf/dockerps -> Formats the output of docker ps.
-         :/conf/logcat -> Parser the Android logcat output
-         :/conf/nginx -> Formats the default nginx log output
-         :/conf/ping -> Formats the output of the ping Linux command
-         :/conf/prio -> Formats the output of logs containing typical words associated to priorities
+        logcat -> parser the android logcat output
+        nginx -> formats the default nginx log output
+        ping -> formats the output of the ping linux command
+        prio -> formats the output of logs containing typical words associated to priorities
+        dockerps -> formats the output of docker ps.
+        dockerstats -> formatter for docker stats
 
 User configurations:
-         /home/luca/.config/cgrc/conf.dockerps -> ?
+        /etc/cgrc/dockerpsa -> formats the output of docker ps.
 
 System configurations:
-        None
+        /home/luca/.config/cgrc/conf.dockerps -> formats the output of docker ps.
 ```
 
 The description is included in the configuration file.
@@ -80,25 +81,19 @@ Refer to the grc readme for writing configuration files. If you wrote conf files
 
 ## Installation
 
-### Snap
+At the moment, only cargo installation is implemented.
+
+### Cargo
 
 Snap packages are available for cgrc for architectures amd64, armhf and aarch64. To install:
 
-```sudo snap install cgrc --edge```
-
-### AUR
-
-An entry is available in the AUR: https://aur.archlinux.org/packages/cgrc.
+```cargo install cgrc```
 
 ### Build Yourself
 
-cgrc requires the Qt tools and the Qt base module >= 5.15 (earlier versions are untested). It can only be built using cmake:
-
 ```
-mkdir build
-cd build
-cmake ..
-make
+cd cgrc-rust
+cargo run
 ```
 
 ## Examples
