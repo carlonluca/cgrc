@@ -61,6 +61,8 @@ Build:
   stage: build_rust
   image:
     name: "rust:1.69"
+  services:
+    - docker:dind
   artifacts:
     paths:
       - cgrc-dist/x86_64-unknown-linux-musl/cgrc
