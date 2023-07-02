@@ -68,6 +68,7 @@ Build:
       - cgrc-dist/x86_64-unknown-linux-musl/cgrc
     untracked: true
   script:
+    - export CROSS_CONTAINER_IN_CONTAINER=true
     - cd cgrc-rust
     - rustup target add x86_64-unknown-linux-musl
     - rustup target add aarch64-unknown-linux-musl
