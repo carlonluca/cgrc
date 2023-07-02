@@ -166,7 +166,7 @@ impl CGRCConfManager {
                 Some(v) => v
             };
             let conf = CGRCParser::parse_conf(&path_string.to_string());
-            println!("\t{:?} -> {:?}", path, match conf.description {
+            println!("\t{} -> {}", path_string, match conf.description {
                 None => String::from("?"),
                 Some(v) => v
             });
