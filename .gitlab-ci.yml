@@ -60,14 +60,29 @@ Test_rust:
 Build:
   stage: build_rust
   image:
-    name: "rust:1.69"
+    name: "carlonluca/cgrc-ci:latest"
+  services:
+    - docker:dind
   artifacts:
     paths:
       - cgrc-dist/x86_64-unknown-linux-musl/cgrc
+      - cgrc-dist/aarch64-unknown-linux-musl/cgrc
+      - cgrc-dist/armv7-unknown-linux-musleabihf/cgrc
     untracked: true
   script:
+    - export CROSS_CONTAINER_IN_CONTAINER=true
+    - export HOSTNAME=$(docker ps -ql)
     - cd cgrc-rust
-    - rustup target add x86_64-unknown-linux-musl
     - cargo build --release --target=x86_64-unknown-linux-musl
     - mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
     - mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
+    - cargo clean
+    - cd ..
+    - cargo install cross --git https://github.com/cross-rs/cross
+    - cross build --release --target aarch64-unknown-linux-musl --manifest-path cgrc-rust/Cargo.toml
+    - mkdir -p cgrc-dist/aarch64-unknown-linux-musl
+    - mv cgrc-rust/target/aarch64-unknown-linux-musl/release/cgrc cgrc-dist/aarch64-unknown-linux-musl/
+    - cargo clean --manifest-path cgrc-rust/Cargo.toml
+    - cross build --release --target armv7-unknown-linux-musleabihf --manifest-path cgrc-rust/Cargo.toml
+    - mkdir -p cgrc-dist/armv7-unknown-linux-musleabihf
+    - mv cgrc-rust/target/armv7-unknown-linux-musleabihf/release/cgrc cgrc-dist/armv7-unknown-linux-musleabihf/

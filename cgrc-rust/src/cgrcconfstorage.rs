@@ -21,11 +21,11 @@ use std::include_bytes;
 
 pub fn load_confs() -> HashMap<&'static str, &'static [u8]> {
     HashMap::from([
-        ("dockerps", &include_bytes!("../../conf/dockerps")[..]),
-        ("dockerstats", &include_bytes!("../../conf/dockerstats")[..]),
-        ("logcat", &include_bytes!("../../conf/logcat")[..]),
-        ("nginx", &include_bytes!("../../conf/nginx")[..]),
-        ("ping", &include_bytes!("../../conf/ping")[..]),
-        ("prio", &include_bytes!("../../conf/prio")[..])
+        ("dockerps", &include_bytes!("../conf/dockerps")[..]),
+        ("dockerstats", &include_bytes!("../conf/dockerstats")[..]),
+        ("logcat", &include_bytes!("../conf/logcat")[..]),
+        ("nginx", &include_bytes!("../conf/nginx")[..]),
+        ("ping", &include_bytes!("../conf/ping")[..]),
+        ("prio", &include_bytes!("../conf/prio")[..])
     ])
 }
