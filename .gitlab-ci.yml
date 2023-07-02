@@ -66,6 +66,7 @@ Build:
       - cgrc-dist
   script:
     - cd cgrc-rust
+    - rustup target add x86_64-unknown-linux-musl
     - cargo build --release --target=x86_64-unknown-linux-musl
     - mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
     - mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
