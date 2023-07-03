@@ -74,6 +74,7 @@ Build:
     - export HOSTNAME=$(docker ps -ql)
     - cd cgrc-rust
     - curl https://sh.rustup.rs -sSf | bash -s -- -y
+    - apt-get install -y build-essential
     - source $HOME/.cargo/env
     - rustup install 1.69.0
     - rustup target add x86_64-unknown-linux-musl
