@@ -60,16 +60,22 @@ Test_rust:
 Build:
   stage: build_rust
   image:
-    name: "rust:1.69"
+    name: "carlonluca/docker-multiarch:jammy"
   services:
     - docker:dind
   artifacts:
     paths:
       - cgrc-dist/x86_64-unknown-linux-musl/cgrc
+      - cgrc-dist/aarch64-unknown-linux-musl/cgrc
+      - cgrc-dist/armv7-unknown-linux-musleabihf/cgrc
     untracked: true
   script:
     - export CROSS_CONTAINER_IN_CONTAINER=true
+    - export HOSTNAME=$(docker ps -ql)
     - cd cgrc-rust
+    - curl https://sh.rustup.rs -sSf | bash -s -- -y
+    - source $HOME/.cargo/env
+    - rustup install 1.69.0
     - rustup target add x86_64-unknown-linux-musl
     - rustup target add aarch64-unknown-linux-musl
     - rustup target add armv7-unknown-linux-musleabihf
