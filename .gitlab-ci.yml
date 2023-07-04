@@ -82,7 +82,7 @@ Build:
     - cross build --release --target aarch64-unknown-linux-musl --manifest-path cgrc-rust/Cargo.toml
     - mkdir -p cgrc-dist/aarch64-unknown-linux-musl
     - mv cgrc-rust/target/aarch64-unknown-linux-musl/release/cgrc cgrc-dist/aarch64-unknown-linux-musl/
-    - cargo clean
+    - cargo clean --manifest-path cgrc-rust/Cargo.toml
     - cross build --release --target armv7-unknown-linux-musleabihf --manifest-path cgrc-rust/Cargo.toml
     - mkdir -p cgrc-dist/armv7-unknown-linux-musleabihf
     - mv cgrc-rust/target/armv7-unknown-linux-musleabihf/release/cgrc cgrc-dist/armv7-unknown-linux-musleabihf/
