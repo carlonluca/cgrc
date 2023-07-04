@@ -55,6 +55,7 @@ Test_rust:
     name: "rust:1.69"
   script:
     - cd cgrc-rust
+    - ./prepare.sh
     - cargo build
 
 Build:
