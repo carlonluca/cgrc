@@ -77,11 +77,12 @@ Build:
     - mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
     - mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
     - cargo clean
+    - cd ..
     - cargo install cross --git https://github.com/cross-rs/cross
-    - cross build --release --target aarch64-unknown-linux-musl
+    - cross build --release --target aarch64-unknown-linux-musl --manifest-path cgrc-rust/Cargo.toml
     - mkdir -p ../cgrc-dist/aarch64-unknown-linux-musl
     - mv target/aarch64-unknown-linux-musl/release/cgrc ../cgrc-dist/aarch64-unknown-linux-musl/
     - cargo clean
-    - cross build --release --target armv7-unknown-linux-musleabihf
+    - cross build --release --target armv7-unknown-linux-musleabihf --manifest-path cgrc-rust/Cargo.toml
     - mkdir -p ../cgrc-dist/armv7-unknown-linux-musleabihf
     - mv target/armv7-unknown-linux-musleabihf/release/cgrc ../cgrc-dist/armv7-unknown-linux-musleabihf/
