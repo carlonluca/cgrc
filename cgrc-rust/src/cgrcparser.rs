@@ -216,14 +216,14 @@ impl CGRCParser {
                     if i >= conf_item.colors.len() {
                         break;
                     }
-                    if debug {
-                        log::debug!("Captured: {:?}", captures.get(i).unwrap().as_str());
-                    }
 
                     let capture = match captures.get(i) {
                         None => continue,
                         Some(v) => v
                     };
+                    if debug {
+                        log::debug!("Captured: {:?}", capture.as_str());
+                    }
                     let from = capture.start();
                     let to   = capture.end();
                     for j in from..to {
