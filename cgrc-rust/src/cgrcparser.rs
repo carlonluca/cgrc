@@ -100,7 +100,7 @@ impl CGRCParser {
         }
 
         if lline.starts_with("regexp=") {
-            item.regex = match Regex::new(lline.replace("regexp=", "").as_str()) {
+            item.regex = match Regex::new(format!("(?i){}", lline.replace("regexp=", "")).as_str()) {
                 Err(e) => {
                     log::error!("Failed to parse regex: {line}");
                     log::error!("{}", e.to_string());
