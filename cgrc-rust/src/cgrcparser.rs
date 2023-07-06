@@ -70,7 +70,6 @@ impl CGRCParser {
                 },
                 Ok(line) => {
                     if CGRCParser::parse_conf_line(&line, &mut conf,  &mut item) {
-                        log::warn!("Adding {:?} to conf", item);
                         conf.items.push(item.clone());
                         item = CGRCConfItem::new();
                     }
@@ -167,7 +166,6 @@ impl CGRCParser {
             let mut back: LC_BackColor = LC_BackColor::LC_BACK_COL_DEFAULT;
             for option in options {
                 let lower_option = option.to_lowercase();
-                log::warn!("Searching color: {:?}", lower_option);
                 if COLORS_ATTRS.contains_key(option) {
                     attrs.insert(COLORS_ATTRS.get(&lower_option).unwrap().clone());
                     continue;
@@ -184,7 +182,6 @@ impl CGRCParser {
             }
 
             let item = CGRCColorItem::new(attrs, forg, back);
-            log::warn!("Pushed color: {:?}", &item);
             items.push(item);
         }
 
