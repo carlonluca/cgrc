@@ -70,11 +70,16 @@ impl CGRCParser {
                 },
                 Ok(line) => {
                     if CGRCParser::parse_conf_line(&line, &mut conf,  &mut item) {
+                        log::warn!("Adding {:?} to conf", item);
                         conf.items.push(item.clone());
                         item = CGRCConfItem::new();
                     }
                 }
             }
+        }
+
+        if item.regex.is_some() {
+            conf.items.push(item.clone());
         }
 
         conf
@@ -162,12 +167,14 @@ impl CGRCParser {
             let mut back: LC_BackColor = LC_BackColor::LC_BACK_COL_DEFAULT;
             for option in options {
                 let lower_option = option.to_lowercase();
+                log::warn!("Searching color: {:?}", lower_option);
                 if COLORS_ATTRS.contains_key(option) {
                     attrs.insert(COLORS_ATTRS.get(&lower_option).unwrap().clone());
                     continue;
                 }
                 if COLORS_BACK.contains_key(option) {
                     back = COLORS_BACK.get(&lower_option).unwrap().clone();
+                    log::info!("Found color: {:?}", back);
                     continue;
                 }
                 if COLORS_FORG.contains_key(option) {
@@ -177,6 +184,7 @@ impl CGRCParser {
             }
 
             let item = CGRCColorItem::new(attrs, forg, back);
+            log::warn!("Pushed color: {:?}", &item);
             items.push(item);
         }
 
@@ -268,7 +276,7 @@ impl CGRCParser {
             }
         }
 
-        formatted_line += &"\x1b[0m".to_string();
+        formatted_line += &"\x1b[0;0m".to_string();
 
         return Some(formatted_line);
     }
