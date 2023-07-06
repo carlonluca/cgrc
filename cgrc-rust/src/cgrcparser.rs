@@ -100,7 +100,7 @@ impl CGRCParser {
         }
 
         if lline.starts_with("regexp=") {
-            item.regex = match Regex::new(format!("(?i){}", lline.replace("regexp=", "")).as_str()) {
+            item.regex = match Regex::new(format!("{}", line.replace("regexp=", "")).as_str()) {
                 Err(e) => {
                     log::error!("Failed to parse regex: {line}");
                     log::error!("{}", e.to_string());
@@ -200,42 +200,45 @@ impl CGRCParser {
             }
 
             let regex = conf_item.regex.as_ref().unwrap();
-            if let Ok(Some(captures)) = regex.captures(&in_line) {
-                if conf_item.skip.unwrap_or(false) {
-                    return None;
-                }
-
-                stop_processing = match &conf_item.count_mode {
-                    None => false,
-                    Some(v) => {
-                        v == &CGRP_CountMode::CGRC_COUNT_STOP
+            for regex_match in regex.captures_iter(&in_line) {
+                if let Ok(regex_match) = regex_match {
+                    if conf_item.skip.unwrap_or(false) {
+                        return None;
                     }
-                };
-                
-                for i in 0..captures.len() {
-                    if i >= conf_item.colors.len() {
-                        break;
-                    }
-
-                    let capture = match captures.get(i) {
-                        None => continue,
-                        Some(v) => v
+    
+                    stop_processing = match &conf_item.count_mode {
+                        None => false,
+                        Some(v) => {
+                            v == &CGRP_CountMode::CGRC_COUNT_STOP
+                        }
                     };
-                    if debug {
-                        log::debug!("Captured: {:?}", capture.as_str());
-                    }
-                    let from = capture.start();
-                    let to   = capture.end();
-                    for j in from..to {
-                        if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
-                            char_colors[j] = &(conf_item.colors[i]);
-                            if debug {
-                                log::warn!("Color: {:?}", conf_item.colors[i]);
+                    
+                    for i in 0..regex_match.len() {
+                        if i >= conf_item.colors.len() {
+                            break;
+                        }
+    
+                        let capture = match regex_match.get(i) {
+                            None => continue,
+                            Some(v) => v
+                        };
+                        if debug {
+                            log::debug!("Captured: {:?}", capture.as_str());
+                        }
+                        let from = capture.start();
+                        let to   = capture.end();
+                        for j in from..to {
+                            if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
+                                char_colors[j] = &(conf_item.colors[i]);
+                                if debug {
+                                    log::warn!("Color: {:?}", conf_item.colors[i]);
+                                }
                             }
                         }
                     }
                 }
             }
+            
         }
 
         let mut formatted_line = String::new();
