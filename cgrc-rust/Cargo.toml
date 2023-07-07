@@ -24,7 +24,7 @@ license = "GPL-3.0"
 description = "Configurable terminal text formatter"
 homepage = "https://bugfreeblog.duckdns.org/2022/09/cgrc-formatting-output-in-the-terminal.html"
 repository = "https://github.com/carlonluca/cgrc"
-readme = "../README.md"
+readme = "./README.md"
 
 [dependencies]
 libc = "0.2"
