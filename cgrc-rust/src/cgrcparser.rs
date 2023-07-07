@@ -204,19 +204,13 @@ impl CGRCParser {
                 break;
             }
 
+            let count_mode = conf_item.count_mode.as_ref().unwrap_or(&CGRP_CountMode::CGRC_COUNT_MORE);
             let regex = conf_item.regex.as_ref().unwrap();
             for regex_match in regex.captures_iter(&in_line) {
                 if let Ok(regex_match) = regex_match {
                     if conf_item.skip.unwrap_or(false) {
                         return None;
                     }
-    
-                    stop_processing = match &conf_item.count_mode {
-                        None => false,
-                        Some(v) => {
-                            v == &CGRP_CountMode::CGRC_COUNT_STOP
-                        }
-                    };
                     
                     for i in 0..regex_match.len() {
                         if i >= conf_item.colors.len() {
@@ -240,6 +234,12 @@ impl CGRCParser {
                                 }
                             }
                         }
+                    }
+
+                    stop_processing = count_mode == &CGRP_CountMode::CGRC_COUNT_STOP;
+
+                    if count_mode == &CGRP_CountMode::CGRC_COUNT_ONCE {
+                        break;
                     }
                 }
             }
