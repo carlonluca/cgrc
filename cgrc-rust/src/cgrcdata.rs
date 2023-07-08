@@ -21,213 +21,213 @@ use std::cmp::Eq;
 use fancy_regex::Regex;
 
 ///
-/// Values to set attribs to text.
-/// 
+/// Values to set attributes to text.
+///
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
-pub enum CGRC_Attrib {
-    CGRC_NONE          = -1,
-    CGRC_RESET         = 0,
-    CGRC_BRIGHT        = 1,
-    CGRC_DIM           = 2,
-    CGRC_ITALIC        = 3,
-    CGRC_UNDERLINE     = 4,
-    CGRC_BLINK         = 5,
-    CGRC_RAPID_BLINK   = 6,
-    CGRC_REVERSE       = 7,
-    CGRC_HIDDEN        = 8,
-    CGRC_STRIKETHROUGH = 9
+pub enum CgrcAttrib {
+    CgrcNone             = -1,
+    CgrcReset            = 0,
+    CgrcBright           = 1,
+    CgrcDim              = 2,
+    CgrcItalic           = 3,
+    CgrcUnderline        = 4,
+    CgrcBlink            = 5,
+    CgrcRapidBlink       = 6,
+    CgrcReverse          = 7,
+    CgrcHidden           = 8,
+    CgrcStrikethrough    = 9
 }
 
 ///
-/// Values to remove attribs to text.
+/// Values to remove attributes from text.
 ///
 #[derive(Debug, Clone)]
-pub enum CGRC_ResetAttrib {
-    CGRC_RESET_NONE          = 0,
-    CGRC_RESET_BRIGHT        = 21,
-    CGRC_RESET_DIM           = 22,
-    CGRC_RESET_ITALIC        = 23,
-    CGRC_RESET_UNDERLINE     = 24,
-    CGRC_RESET_BLINK         = 25,
-    CGRC_RESET_RAPID_BLINK   = 26,
-    CGRC_RESET_REVERSE       = 27,
-    CGRC_RESET_HIDDEN        = 28,
-    CGRC_RESET_STRIKETHROUGH = 29
+pub enum CgrcResetAttrib {
+    CgrcResetNone            = 0,
+    CgrcResetBright          = 21,
+    CgrcResetDim             = 22,
+    CgrcResetItalic          = 23,
+    CgrcResetUnderline       = 24,
+    CgrcResetBlink           = 25,
+    CgrcResetRapidBlink      = 26,
+    CgrcResetReverse         = 27,
+    CgrcResetHidden          = 28,
+    CgrcResetStrikethrough   = 29
 }
 
 ///
 /// Values to set count mode.
-/// 
+///
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub enum CGRP_CountMode {
-    CGRC_COUNT_ONCE,
-    CGRC_COUNT_MORE,
-    CGRC_COUNT_STOP,
-    CGRC_COUNT_PREVIOUS,
-    CGRC_COUNT_BLOCK,
-    CGRC_COUNT_UNBLOCK
+pub enum CgrcCountMode {
+    CgrcCountOnce,
+    CgrcCountMore,
+    CgrcCountStop,
+    CgrcCountPrevious,
+    CgrcCountBlock,
+    CgrcCountUnblock,
 }
 
-#[derive(Copy, Clone)]
-enum CGRC_Color {
-    LC_BLACK = 0,
-    LC_RED = 1,
-    LC_GREEN = 2,
-    LC_YELLOW = 3,
-    LC_BLUE = 4,
-    LC_MAGENTA = 5,
-    LC_CYAN = 6,
-    LC_WHITE = 7,
-    LC_DEFAULT = 9
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
-pub enum LC_BackColor {
-    LC_BACK_COL_BLACK = 40 + CGRC_Color::LC_BLACK as isize,
-    LC_BACK_COL_RED = 40 + CGRC_Color::LC_RED as isize,
-    LC_BACK_COL_GREEN = 40 + CGRC_Color::LC_GREEN as isize,
-    LC_BACK_COL_YELLOW = 40 + CGRC_Color::LC_YELLOW as isize,
-    LC_BACK_COL_BLUE = 40 + CGRC_Color::LC_BLUE as isize,
-    LC_BACK_COL_MAGENTA = 40 + CGRC_Color::LC_MAGENTA as isize,
-    LC_BACK_COL_CYAN = 40 + CGRC_Color::LC_CYAN as isize,
-    LC_BACK_COL_WHITE = 40 + CGRC_Color::LC_WHITE as isize,
-    LC_BACK_BRIGHT_COL_BLACK = 100 + CGRC_Color::LC_BLACK as isize,
-    LC_BACK_BRIGHT_COL_RED = 100 + CGRC_Color::LC_RED as isize,
-    LC_BACK_BRIGHT_COL_GREEN = 100 + CGRC_Color::LC_GREEN as isize,
-    LC_BACK_BRIGHT_COL_YELLOW = 100 + CGRC_Color::LC_YELLOW as isize,
-    LC_BACK_BRIGHT_COL_BLUE = 100 + CGRC_Color::LC_BLUE as isize,
-    LC_BACK_BRIGHT_COL_MAGENTA = 100 + CGRC_Color::LC_MAGENTA as isize,
-    LC_BACK_BRIGHT_COL_CYAN = 100 + CGRC_Color::LC_CYAN as isize,
-    LC_BACK_BRIGHT_COL_WHITE = 100 + CGRC_Color::LC_WHITE as isize,
-    LC_BACK_COL_DEFAULT = 40 + CGRC_Color::LC_DEFAULT as isize
+#[derive(Debug, Copy, Clone)]
+enum CgrcColor {
+    LcBlack = 0,
+    LcRed = 1,
+    LcGreen = 2,
+    LcYellow = 3,
+    LcBlue = 4,
+    LcMagenta = 5,
+    LcCyan = 6,
+    LcWhite = 7,
+    LcDefault = 9,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
-pub enum LC_LogColor {
-    LC_FORG_COL_BLACK = 30 + CGRC_Color::LC_BLACK as isize,
-    LC_FORG_COL_RED = 30 + CGRC_Color::LC_RED as isize,
-    LC_FORG_COL_GREEN = 30 + CGRC_Color::LC_GREEN as isize,
-    LC_FORG_COL_YELLOW = 30 + CGRC_Color::LC_YELLOW as isize,
-    LC_FORG_COL_BLUE = 30 + CGRC_Color::LC_BLUE as isize,
-    LC_FORG_COL_MAGENTA = 30 + CGRC_Color::LC_MAGENTA as isize,
-    LC_FORG_COL_CYAN = 30 + CGRC_Color::LC_CYAN as isize,
-    LC_FORG_COL_WHITE = 30 + CGRC_Color::LC_WHITE as isize,
-    LC_FORG_BRIGHT_COL_BLACK = 90 + CGRC_Color::LC_BLACK as isize,
-    LC_FORG_BRIGHT_COL_RED = 90 + CGRC_Color::LC_RED as isize,
-    LC_FORG_BRIGHT_COL_GREEN = 90 + CGRC_Color::LC_GREEN as isize,
-    LC_FORG_BRIGHT_COL_YELLOW = 90 + CGRC_Color::LC_YELLOW as isize,
-    LC_FORG_BRIGHT_COL_BLUE = 90 + CGRC_Color::LC_BLUE as isize,
-    LC_FORG_BRIGHT_COL_MAGENTA = 90 + CGRC_Color::LC_MAGENTA as isize,
-    LC_FORG_BRIGHT_COL_CYAN = 90 + CGRC_Color::LC_CYAN as isize,
-    LC_FORG_BRIGHT_COL_WHITE = 90 + CGRC_Color::LC_WHITE as isize,
-    LC_FORG_COL_DEFAULT = 30 + CGRC_Color::LC_DEFAULT as isize
+pub enum LcBackColor {
+    LcBackColBlack = 40 + CgrcColor::LcBlack as isize,
+    LcBackColRed = 40 + CgrcColor::LcRed as isize,
+    LcBackColGreen = 40 + CgrcColor::LcGreen as isize,
+    LcBackColYellow = 40 + CgrcColor::LcYellow as isize,
+    LcBackColBlue = 40 + CgrcColor::LcBlue as isize,
+    LcBackColMagenta = 40 + CgrcColor::LcMagenta as isize,
+    LcBackColCyan = 40 + CgrcColor::LcCyan as isize,
+    LcBackColWhite = 40 + CgrcColor::LcWhite as isize,
+    LcBackBrightColBlack = 100 + CgrcColor::LcBlack as isize,
+    LcBackBrightColRed = 100 + CgrcColor::LcRed as isize,
+    LcBackBrightColGreen = 100 + CgrcColor::LcGreen as isize,
+    LcBackBrightColYellow = 100 + CgrcColor::LcYellow as isize,
+    LcBackBrightColBlue = 100 + CgrcColor::LcBlue as isize,
+    LcBackBrightColMagenta = 100 + CgrcColor::LcMagenta as isize,
+    LcBackBrightColCyan = 100 + CgrcColor::LcCyan as isize,
+    LcBackBrightColWhite = 100 + CgrcColor::LcWhite as isize,
+    LcBackColDefault = 40 + CgrcColor::LcDefault as isize,
 }
 
-pub static COLORS_ATTRS: phf::Map<&'static str, CGRC_Attrib> = phf::phf_map! {
-    "none" => CGRC_Attrib::CGRC_NONE,
-    "unchanged" => CGRC_Attrib::CGRC_NONE,
-    "default" => CGRC_Attrib::CGRC_RESET,
-    "bold" => CGRC_Attrib::CGRC_BRIGHT,
-    "underline" => CGRC_Attrib::CGRC_UNDERLINE,
-    "blink" => CGRC_Attrib::CGRC_BLINK,
-    "reverse" => CGRC_Attrib::CGRC_REVERSE,
-    "concealed" => CGRC_Attrib::CGRC_HIDDEN,
-    "dark" => CGRC_Attrib::CGRC_DIM,
-    "italic" => CGRC_Attrib::CGRC_ITALIC,
-    "rapidblink" => CGRC_Attrib::CGRC_RAPID_BLINK,
-    "strikethrough" => CGRC_Attrib::CGRC_STRIKETHROUGH,
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
+pub enum LcLogColor {
+    LcForgColBlack = 30 + CgrcColor::LcBlack as isize,
+    LcForgColRed = 30 + CgrcColor::LcRed as isize,
+    LcForgColGreen = 30 + CgrcColor::LcGreen as isize,
+    LcForgColYellow = 30 + CgrcColor::LcYellow as isize,
+    LcForgColBlue = 30 + CgrcColor::LcBlue as isize,
+    LcForgColMagenta = 30 + CgrcColor::LcMagenta as isize,
+    LcForgColCyan = 30 + CgrcColor::LcCyan as isize,
+    LcForgColWhite = 30 + CgrcColor::LcWhite as isize,
+    LcForgBrightColBlack = 90 + CgrcColor::LcBlack as isize,
+    LcForgBrightColRed = 90 + CgrcColor::LcRed as isize,
+    LcForgBrightColGreen = 90 + CgrcColor::LcGreen as isize,
+    LcForgBrightColYellow = 90 + CgrcColor::LcYellow as isize,
+    LcForgBrightColBlue = 90 + CgrcColor::LcBlue as isize,
+    LcForgBrightColMagenta = 90 + CgrcColor::LcMagenta as isize,
+    LcForgBrightColCyan = 90 + CgrcColor::LcCyan as isize,
+    LcForgBrightColWhite = 90 + CgrcColor::LcWhite as isize,
+    LcForgColDefault = 30 + CgrcColor::LcDefault as isize,
+}
+
+pub static COLORS_ATTRS: phf::Map<&'static str, CgrcAttrib> = phf::phf_map! {
+    "none" => CgrcAttrib::CgrcNone,
+    "unchanged" => CgrcAttrib::CgrcNone,
+    "default" => CgrcAttrib::CgrcReset,
+    "bold" => CgrcAttrib::CgrcBright,
+    "underline" => CgrcAttrib::CgrcUnderline,
+    "blink" => CgrcAttrib::CgrcBlink,
+    "reverse" => CgrcAttrib::CgrcReverse,
+    "concealed" => CgrcAttrib::CgrcHidden,
+    "dark" => CgrcAttrib::CgrcDim,
+    "italic" => CgrcAttrib::CgrcItalic,
+    "rapidblink" => CgrcAttrib::CgrcRapidBlink,
+    "strikethrough" => CgrcAttrib::CgrcStrikethrough,
 };
 
-pub fn colors_attr_clear(attr: &CGRC_Attrib) -> CGRC_ResetAttrib {
+pub fn colors_attr_clear(attr: &CgrcAttrib) -> CgrcResetAttrib {
     return match attr {
-        CGRC_Attrib::CGRC_BRIGHT => CGRC_ResetAttrib::CGRC_RESET_BRIGHT,
-        CGRC_Attrib::CGRC_NONE => CGRC_ResetAttrib::CGRC_RESET_NONE,
-        CGRC_Attrib::CGRC_RESET => CGRC_ResetAttrib::CGRC_RESET_NONE,
-        CGRC_Attrib::CGRC_DIM => CGRC_ResetAttrib::CGRC_RESET_DIM,
-        CGRC_Attrib::CGRC_ITALIC => CGRC_ResetAttrib::CGRC_RESET_ITALIC,
-        CGRC_Attrib::CGRC_UNDERLINE => CGRC_ResetAttrib::CGRC_RESET_UNDERLINE,
-        CGRC_Attrib::CGRC_BLINK => CGRC_ResetAttrib::CGRC_RESET_BLINK,
-        CGRC_Attrib::CGRC_RAPID_BLINK => CGRC_ResetAttrib::CGRC_RESET_RAPID_BLINK,
-        CGRC_Attrib::CGRC_REVERSE => CGRC_ResetAttrib::CGRC_RESET_REVERSE,
-        CGRC_Attrib::CGRC_HIDDEN => CGRC_ResetAttrib::CGRC_RESET_HIDDEN,
-        CGRC_Attrib::CGRC_STRIKETHROUGH => CGRC_ResetAttrib::CGRC_RESET_HIDDEN
-    };
+        CgrcAttrib::CgrcBright => CgrcResetAttrib::CgrcResetBright,
+        CgrcAttrib::CgrcNone => CgrcResetAttrib::CgrcResetNone,
+        CgrcAttrib::CgrcReset => CgrcResetAttrib::CgrcResetNone,
+        CgrcAttrib::CgrcDim => CgrcResetAttrib::CgrcResetDim,
+        CgrcAttrib::CgrcItalic => CgrcResetAttrib::CgrcResetItalic,
+        CgrcAttrib::CgrcUnderline => CgrcResetAttrib::CgrcResetUnderline,
+        CgrcAttrib::CgrcBlink => CgrcResetAttrib::CgrcResetBlink,
+        CgrcAttrib::CgrcRapidBlink => CgrcResetAttrib::CgrcResetRapidBlink,
+        CgrcAttrib::CgrcReverse => CgrcResetAttrib::CgrcResetReverse,
+        CgrcAttrib::CgrcHidden => CgrcResetAttrib::CgrcResetHidden,
+        CgrcAttrib::CgrcStrikethrough => CgrcResetAttrib::CgrcResetHidden,
+    }
 }
 
-pub static COLORS_BACK: phf::Map<&'static str, LC_BackColor> = phf::phf_map! {
-    "on_black" => LC_BackColor::LC_BACK_COL_BLACK,
-    "on_red" => LC_BackColor::LC_BACK_COL_RED,
-    "on_green" => LC_BackColor::LC_BACK_COL_GREEN,
-    "on_yellow" => LC_BackColor::LC_BACK_COL_YELLOW,
-    "on_blue" => LC_BackColor::LC_BACK_COL_BLUE,
-    "on_magenta" => LC_BackColor::LC_BACK_COL_MAGENTA,
-    "on_cyan" => LC_BackColor::LC_BACK_COL_CYAN,
-    "on_white" => LC_BackColor::LC_BACK_COL_WHITE,
-    "on_bright_black" => LC_BackColor::LC_BACK_BRIGHT_COL_BLACK,
-    "on_bright_red" => LC_BackColor::LC_BACK_BRIGHT_COL_RED,
-    "on_bright_green" => LC_BackColor::LC_BACK_BRIGHT_COL_GREEN,
-    "on_bright_yellow" => LC_BackColor::LC_BACK_BRIGHT_COL_YELLOW,
-    "on_bright_blue" => LC_BackColor::LC_BACK_BRIGHT_COL_BLUE,
-    "on_bright_magenta" => LC_BackColor::LC_BACK_BRIGHT_COL_MAGENTA,
-    "on_bright_cyan" => LC_BackColor::LC_BACK_BRIGHT_COL_CYAN,
-    "on_bright_white" => LC_BackColor::LC_BACK_BRIGHT_COL_WHITE,
+pub static COLORS_BACK: phf::Map<&'static str, LcBackColor> = phf::phf_map! {
+    "on_black" => LcBackColor::LcBackColBlack,
+    "on_red" => LcBackColor::LcBackColRed,
+    "on_green" => LcBackColor::LcBackColGreen,
+    "on_yellow" => LcBackColor::LcBackColYellow,
+    "on_blue" => LcBackColor::LcBackColBlue,
+    "on_magenta" => LcBackColor::LcBackColMagenta,
+    "on_cyan" => LcBackColor::LcBackColCyan,
+    "on_white" => LcBackColor::LcBackColWhite,
+    "on_bright_black" => LcBackColor::LcBackBrightColBlack,
+    "on_bright_red" => LcBackColor::LcBackBrightColRed,
+    "on_bright_green" => LcBackColor::LcBackBrightColGreen,
+    "on_bright_yellow" => LcBackColor::LcBackBrightColYellow,
+    "on_bright_blue" => LcBackColor::LcBackBrightColBlue,
+    "on_bright_magenta" => LcBackColor::LcBackBrightColMagenta,
+    "on_bright_cyan" => LcBackColor::LcBackBrightColCyan,
+    "on_bright_white" => LcBackColor::LcBackBrightColWhite,
 };
 
-pub static COLORS_FORG: phf::Map<&'static str, LC_LogColor> = phf::phf_map! {
-    "black" => LC_LogColor::LC_FORG_COL_BLACK,
-    "red" => LC_LogColor::LC_FORG_COL_RED,
-    "green" => LC_LogColor::LC_FORG_COL_GREEN,
-    "yellow" => LC_LogColor::LC_FORG_COL_YELLOW,
-    "blue" => LC_LogColor::LC_FORG_COL_BLUE,
-    "magenta" => LC_LogColor::LC_FORG_COL_MAGENTA,
-    "cyan" => LC_LogColor::LC_FORG_COL_CYAN,
-    "white" => LC_LogColor::LC_FORG_COL_WHITE,
-    "bright_black" => LC_LogColor::LC_FORG_BRIGHT_COL_BLACK,
-    "bright_red" => LC_LogColor::LC_FORG_BRIGHT_COL_RED,
-    "bright_green" => LC_LogColor::LC_FORG_BRIGHT_COL_GREEN,
-    "bright_yellow" => LC_LogColor::LC_FORG_BRIGHT_COL_YELLOW,
-    "bright_blue" => LC_LogColor::LC_FORG_BRIGHT_COL_BLUE,
-    "bright_magenta" => LC_LogColor::LC_FORG_BRIGHT_COL_MAGENTA,
-    "bright_cyan" => LC_LogColor::LC_FORG_BRIGHT_COL_CYAN,
-    "bright_white" => LC_LogColor::LC_FORG_BRIGHT_COL_WHITE,
+pub static COLORS_FORG: phf::Map<&'static str, LcLogColor> = phf::phf_map! {
+    "black" => LcLogColor::LcForgColBlack,
+    "red" => LcLogColor::LcForgColRed,
+    "green" => LcLogColor::LcForgColGreen,
+    "yellow" => LcLogColor::LcForgColYellow,
+    "blue" => LcLogColor::LcForgColBlue,
+    "magenta" => LcLogColor::LcForgColMagenta,
+    "cyan" => LcLogColor::LcForgColCyan,
+    "white" => LcLogColor::LcForgColWhite,
+    "bright_black" => LcLogColor::LcForgBrightColBlack,
+    "bright_red" => LcLogColor::LcForgBrightColRed,
+    "bright_green" => LcLogColor::LcForgBrightColGreen,
+    "bright_yellow" => LcLogColor::LcForgBrightColYellow,
+    "bright_blue" => LcLogColor::LcForgBrightColBlue,
+    "bright_magenta" => LcLogColor::LcForgBrightColMagenta,
+    "bright_cyan" => LcLogColor::LcForgBrightColCyan,
+    "bright_white" => LcLogColor::LcForgBrightColWhite,
 };
 
 ///
 /// Item containing a color for a line.
 ///
 #[derive(Clone, Debug)]
-pub struct CGRCColorItem {
-    pub attrs: HashSet<CGRC_Attrib>,
-    pub forg: LC_LogColor,
-    pub back: LC_BackColor,
+pub struct CgrcColorItem {
+    pub attrs: HashSet<CgrcAttrib>,
+    pub forg: LcLogColor,
+    pub back: LcBackColor,
     pub escape_seq: String,
-    pub clear_seq: String
+    pub clear_seq: String,
 }
 
-impl CGRCColorItem {
+impl CgrcColorItem {
     ///
     /// Creates a new color item for a line.
-    /// 
-    pub fn new(attrs: HashSet<CGRC_Attrib>, forg: LC_LogColor, back: LC_BackColor) -> CGRCColorItem {
-        let escape_seq = CGRCColorItem::build_escape_seq(&attrs, &forg, &back);
-        let clear_seq = CGRCColorItem::build_clear_seq(&attrs);
-        CGRCColorItem {
+    ///
+    pub fn new(attrs: HashSet<CgrcAttrib>, forg: LcLogColor, back: LcBackColor) -> CgrcColorItem {
+        let escape_seq = CgrcColorItem::build_escape_seq(&attrs, &forg, &back);
+        let clear_seq = CgrcColorItem::build_clear_seq(&attrs);
+        CgrcColorItem {
             attrs,
             forg,
             back,
             escape_seq,
-            clear_seq
+            clear_seq,
         }
     }
 
     ///
     /// Builds the escape sequence.
-    /// 
-    fn build_escape_seq(attrs: &HashSet<CGRC_Attrib>, forg: &LC_LogColor, back: &LC_BackColor) -> String {
+    ///
+    fn build_escape_seq(attrs: &HashSet<CgrcAttrib>, forg: &LcLogColor, back: &LcBackColor) -> String {
         let mut seq = format!("{}[{};{}",
             0x1b as char,
             *forg as u8,
-            *back as u8
+            *back as u8,
         );
         for attr in attrs {
             seq += &format!(";{}", *attr as u8);
@@ -238,13 +238,13 @@ impl CGRCColorItem {
 
     ///
     /// Builds the clear sequence.
-    /// 
-    fn build_clear_seq(attrs: &HashSet<CGRC_Attrib>) -> String {
+    ///
+    fn build_clear_seq(attrs: &HashSet<CgrcAttrib>) -> String {
         let mut seq = format!(
             "{}[{};{}",
             0x1b as char,
-            LC_LogColor::LC_FORG_COL_DEFAULT as u8,
-            LC_BackColor::LC_BACK_COL_DEFAULT as u8
+            LcLogColor::LcForgColDefault as u8,
+            LcBackColor::LcBackColDefault as u8
         );
         for attr in attrs {
             seq += &format!(";{}", colors_attr_clear(&attr) as u8);
@@ -255,40 +255,40 @@ impl CGRCColorItem {
 }
 
 #[derive(Clone, Debug)]
-pub struct CGRCConfItem {
+pub struct CgrcConfItem {
     pub regex: Option<Regex>,
-    pub colors: Vec<CGRCColorItem>,
+    pub colors: Vec<CgrcColorItem>,
     pub skip: Option<bool>,
-    pub count_mode: Option<CGRP_CountMode>
+    pub count_mode: Option<CgrcCountMode>,
 }
 
-impl CGRCConfItem {
-    pub fn new() -> CGRCConfItem {
-        CGRCConfItem {
+impl CgrcConfItem {
+    pub fn new() -> CgrcConfItem {
+        CgrcConfItem {
             regex: None,
             colors: vec![],
             skip: None,
-            count_mode: None
+            count_mode: None,
         }
     }
 }
 
-impl PartialEq for CGRCConfItem {
+impl PartialEq for CgrcConfItem {
     fn eq(&self, other: &Self) -> bool {
-        return match &self.regex {
+        match &self.regex {
             None => match other.regex {
                 None => true,
-                Some(_) => false
+                Some(_) => false,
             },
             Some(r1) => match &other.regex {
                 None => false,
-                Some(r2) => r1.as_str() == r2.as_str()
-            }
+                Some(r2) => r1.as_str() == r2.as_str(),
+            },
         }
     }
 }
 
-pub struct CGRCConf {
-    pub items: Vec<CGRCConfItem>,
-    pub description: Option<String>
+pub struct CgrcConf {
+    pub items: Vec<CgrcConfItem>,
+    pub description: Option<String>,
 }

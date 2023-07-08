@@ -20,13 +20,13 @@ use std::{process, fs::File, io::{BufReader, BufRead, Cursor}, collections::Hash
 use std::ptr;
 use fancy_regex::Regex;
 use crate::cgrcdata::{
-    CGRCColorItem,
-    CGRP_CountMode,
-    CGRCConfItem,
-    CGRCConf,
-    CGRC_Attrib,
-    LC_LogColor,
-    LC_BackColor,
+    CgrcColorItem,
+    CgrcCountMode,
+    CgrcConfItem,
+    CgrcConf,
+    CgrcAttrib,
+    LcLogColor,
+    LcBackColor,
     COLORS_ATTRS,
     COLORS_FORG,
     COLORS_BACK
@@ -38,7 +38,7 @@ impl CGRCParser {
     ///
     /// Parsers a conf file.
     /// 
-    pub fn parse_conf(conf_file: &String) -> CGRCConf {
+    pub fn parse_conf(conf_file: &String) -> CgrcConf {
         let file = match File::open(conf_file) {
             Err(e) => {
                 log::error!("Failed to open conf file {conf_file}: {e}");
@@ -56,9 +56,9 @@ impl CGRCParser {
     ///
     /// Parse lines from a buffered reader.
     /// 
-    pub fn parse_conf_lines<T: BufRead>(reader: T) -> CGRCConf {
-        let mut item = CGRCConfItem::new();
-        let mut conf = CGRCConf {
+    pub fn parse_conf_lines<T: BufRead>(reader: T) -> CgrcConf {
+        let mut item = CgrcConfItem::new();
+        let mut conf = CgrcConf {
             description: None,
             items: vec![]
         };
@@ -71,7 +71,7 @@ impl CGRCParser {
                 Ok(line) => {
                     if CGRCParser::parse_conf_line(&line, &mut conf,  &mut item) {
                         conf.items.push(item.clone());
-                        item = CGRCConfItem::new();
+                        item = CgrcConfItem::new();
                     }
                 }
             }
@@ -87,7 +87,7 @@ impl CGRCParser {
     ///
     /// Parses a configuration from a string.
     /// 
-    pub fn parse_conf_string(conf: String) -> CGRCConf {
+    pub fn parse_conf_string(conf: String) -> CgrcConf {
         let cursor = Cursor::new(conf);
         let reader = BufReader::new(cursor);
         return CGRCParser::parse_conf_lines(reader);
@@ -95,7 +95,7 @@ impl CGRCParser {
 
     // Private portion
     // ===============
-    fn parse_conf_line(line: &String, conf: &mut CGRCConf, item: &mut CGRCConfItem) -> bool {
+    fn parse_conf_line(line: &String, conf: &mut CgrcConf, item: &mut CgrcConfItem) -> bool {
         let lline = line.to_lowercase();
 
         if lline.starts_with("desc=") {
@@ -128,22 +128,22 @@ impl CGRCParser {
         if lline.starts_with("count=") {
             match lline.as_str() {
                 "count=once" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_ONCE);
+                    item.count_mode = Some(CgrcCountMode::CgrcCountOnce);
                 },
                 "count=more" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_MORE);
+                    item.count_mode = Some(CgrcCountMode::CgrcCountMore);
                 },
                 "count=stop" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_STOP)
+                    item.count_mode = Some(CgrcCountMode::CgrcCountStop)
                 },
                 "count=previous" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_PREVIOUS)
+                    item.count_mode = Some(CgrcCountMode::CgrcCountPrevious)
                 },
                 "count=block" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_BLOCK)
+                    item.count_mode = Some(CgrcCountMode::CgrcCountBlock)
                 },
                 "count=unblock" => {
-                    item.count_mode = Some(CGRP_CountMode::CGRC_COUNT_UNBLOCK)
+                    item.count_mode = Some(CgrcCountMode::CgrcCountUnblock)
                 }
                 _default => {
                     log::error!("Invalid count mode");
@@ -156,14 +156,14 @@ impl CGRCParser {
         return item.regex.is_some();
     }
 
-    fn parse_colors(line: &String) -> Vec<CGRCColorItem> {
-        let mut items: Vec<CGRCColorItem> = vec![];
+    fn parse_colors(line: &String) -> Vec<CgrcColorItem> {
+        let mut items: Vec<CgrcColorItem> = vec![];
         let line_tokens = line.split(",");
         for line_token in line_tokens {
             let options = line_token.split(" ");
-            let mut attrs: HashSet<CGRC_Attrib> = HashSet::new();
-            let mut forg = LC_LogColor::LC_FORG_COL_DEFAULT;
-            let mut back: LC_BackColor = LC_BackColor::LC_BACK_COL_DEFAULT;
+            let mut attrs: HashSet<CgrcAttrib> = HashSet::new();
+            let mut forg = LcLogColor::LcForgColDefault;
+            let mut back: LcBackColor = LcBackColor::LcBackColDefault;
             for option in options {
                 let lower_option = option.to_lowercase();
                 if COLORS_ATTRS.contains_key(option) {
@@ -181,7 +181,7 @@ impl CGRCParser {
                 }
             }
 
-            let item = CGRCColorItem::new(attrs, forg, back);
+            let item = CgrcColorItem::new(attrs, forg, back);
             items.push(item);
         }
 
@@ -191,9 +191,9 @@ impl CGRCParser {
     ///
     /// Parses the line.
     /// 
-    pub fn parse_log_line(conf_items: &Vec<CGRCConfItem>, in_line: &String, debug: bool) -> Option<String> {
+    pub fn parse_log_line(conf_items: &Vec<CgrcConfItem>, in_line: &String, debug: bool) -> Option<String> {
         let in_line_length = in_line.len();
-        let mut char_colors: Vec<*const CGRCColorItem> = vec![ptr::null(); in_line_length];
+        let mut char_colors: Vec<*const CgrcColorItem> = vec![ptr::null(); in_line_length];
         let mut stop_processing = false;
         for conf_item in conf_items {
             if debug {
@@ -204,7 +204,7 @@ impl CGRCParser {
                 break;
             }
 
-            let count_mode = conf_item.count_mode.as_ref().unwrap_or(&CGRP_CountMode::CGRC_COUNT_MORE);
+            let count_mode = conf_item.count_mode.as_ref().unwrap_or(&CgrcCountMode::CgrcCountMore);
             let regex = conf_item.regex.as_ref().unwrap();
             for regex_match in regex.captures_iter(&in_line) {
                 if let Ok(regex_match) = regex_match {
@@ -227,7 +227,7 @@ impl CGRCParser {
                         let from = capture.start();
                         let to   = capture.end();
                         for j in from..to {
-                            if !conf_item.colors[i].attrs.contains(&CGRC_Attrib::CGRC_NONE) {
+                            if !conf_item.colors[i].attrs.contains(&CgrcAttrib::CgrcNone) {
                                 char_colors[j] = &(conf_item.colors[i]);
                                 if debug {
                                     log::warn!("Color: {:?}", conf_item.colors[i]);
@@ -236,9 +236,9 @@ impl CGRCParser {
                         }
                     }
 
-                    stop_processing = count_mode == &CGRP_CountMode::CGRC_COUNT_STOP;
+                    stop_processing = count_mode == &CgrcCountMode::CgrcCountStop;
 
-                    if count_mode == &CGRP_CountMode::CGRC_COUNT_ONCE {
+                    if count_mode == &CgrcCountMode::CgrcCountOnce {
                         break;
                     }
                 }
