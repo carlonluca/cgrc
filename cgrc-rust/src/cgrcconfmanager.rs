@@ -47,7 +47,7 @@ impl CGRCConfManager {
                 match fs::read_to_string(path) {
                     Ok(c) => return Some(c),
                     Err(e) => {
-                        log::error!("Cannot read conf {}", conf);
+                        log::error!("Error: {}. Cannot read conf {}", e, conf);
                         return None;
                     }
                 }
@@ -62,7 +62,7 @@ impl CGRCConfManager {
                 match str::from_utf8(confs.get(conf.as_str()).unwrap()) {
                     Ok(c) => return Some(c.to_string()),
                     Err(e) => {
-                        log::error!("Cannot read conf {}", conf);
+                        log::error!("Error: {}. Cannot read conf {}", e, conf);
                         return None;
                     }
                 }
