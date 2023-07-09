@@ -1,5 +1,7 @@
 # CGRC - C++ Generic Colorizer
 
+_NOTE: the current implementation is written in Rust. Go into the cgrc-rust directory for it._
+
 cgrc is a binary that can filter text to improve formatting in a console. It is based on the excellent [grc tool](https://github.com/garabik/grc), but it is written in C++ with Qt. It should be mostly compatible with it, but only a selection of features that I needed were implemented. The reason why cgrc exists is that grc proved to be too slow for me in a few cases, so I quickly implemented a version for myself in C++. This means that currently only a few configuration files are available, but you can add everything you need. Open a MR if you want to add something to the repo.
 
 ## Usage
