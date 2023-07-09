@@ -20,6 +20,9 @@ build.args          ""
 
 post-fetch {
     system -W ${worksrcpath} "git submodule update --init"
+}
+
+pre-build {
     system -W ${worksrcpath}/cgrc-rust "cargo fetch --locked"
 }
 
