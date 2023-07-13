@@ -1,7 +1,7 @@
 name: cgrc
-version: '1.0.0'
+version: '2.0.1'
 grade: devel
-base: core22
+base: core18
 confinement: strict
 summary: Configurable terminal text formatter
 description: |
@@ -16,21 +16,12 @@ architectures:
 
 apps:
   cgrc:
-    command: usr/bin/cgrc
+    command: bin/cgrc
 
 parts:
   cgrc:
-    plugin: cmake
-    cmake-parameters:
-      - -DCMAKE_INSTALL_PREFIX=/usr
+    plugin: rust
     source-type: git
+    source-subdir: cgrc-rust
     source-branch: master
     source: https://github.com/carlonluca/cgrc.git
-    build-packages:
-      - g++
-      - cmake
-      - qt6-base-dev
-    stage-packages:
-      - libc6
-      - libstdc++6
-      - libqt6core6
