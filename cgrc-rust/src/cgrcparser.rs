@@ -193,6 +193,10 @@ impl CGRCParser {
     /// 
     pub fn parse_log_line(conf_items: &Vec<CgrcConfItem>, in_line: &String, debug: bool) -> Option<String> {
         let in_line_length = in_line.len();
+        if in_line_length <= 0 {
+            return None;
+        }
+
         let mut char_colors: Vec<*const CgrcColorItem> = vec![ptr::null(); in_line_length];
         let mut stop_processing = false;
         for conf_item in conf_items {
