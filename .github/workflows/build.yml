@@ -22,7 +22,7 @@ jobs:
   build_rust:
     runs-on: ubuntu-22.04
     container:
-      image: "carlonluca/cgrc-ci:latest"
+      image: docker.io/carlonluca/cgrc-ci:latest
 
     services:
       docker:
