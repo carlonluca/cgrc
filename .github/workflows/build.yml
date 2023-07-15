@@ -21,6 +21,9 @@ jobs:
           ./cgrc --version
   build_rust:
     runs-on: ubuntu-22.04
+    image:
+      name: "carlonluca/cgrc-ci:latest"
+
     services:
       docker:
         image: docker:dind
