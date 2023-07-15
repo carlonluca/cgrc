@@ -43,7 +43,7 @@ jobs:
           export CROSS_CONTAINER_IN_CONTAINER=true
           export HOSTNAME=$(docker ps -ql)
           rustup default stable
-          rustup target install --toolchain x86_64-unknown-linux-musl
+          rustup target add --toolchain stable x86_64-unknown-linux-musl
           cd cgrc-rust
           cargo build --release --target=x86_64-unknown-linux-musl
           mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
