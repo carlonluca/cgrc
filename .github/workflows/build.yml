@@ -2,7 +2,7 @@ name: Build
 on: push
 
 jobs:
-  build:
+  build_qt:
     runs-on: ubuntu-22.04
     container:
       image: docker.io/carlonluca/qt-dev:6.3.1_jammy
@@ -19,3 +19,46 @@ jobs:
           cmake ..
           make
           ./cgrc --version
+  build_rust:
+    runs-on: ubuntu-22.04
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          docker version
+          docker info
+
+      - name: Build and publish artifacts
+        run: |
+          export CROSS_CONTAINER_IN_CONTAINER=true
+          export HOSTNAME=$(docker ps -ql)
+          cd cgrc-rust
+          cargo build --release --target=x86_64-unknown-linux-musl
+          mkdir -p ../cgrc-dist/x86_64-unknown-linux-musl
+          mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
+          cargo clean
+          cd ..
+          cargo install cross --git https://github.com/cross-rs/cross
+          cross build --release --target aarch64-unknown-linux-musl --manifest-path cgrc-rust/Cargo.toml
+          mkdir -p cgrc-dist/aarch64-unknown-linux-musl
+          mv cgrc-rust/target/aarch64-unknown-linux-musl/release/cgrc cgrc-dist/aarch64-unknown-linux-musl/
+          cargo clean --manifest-path cgrc-rust/Cargo.toml
+          cross build --release --target armv7-unknown-linux-musleabihf --manifest-path cgrc-rust/Cargo.toml
+          mkdir -p cgrc-dist/armv7-unknown-linux-musleabihf
+          mv cgrc-rust/target/armv7-unknown-linux-musleabihf/release/cgrc cgrc-dist/armv7-unknown-linux-musleabihf/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: cgrc-dist
+          path: |
+            cgrc-dist/x86_64-unknown-linux-musl/cgrc
+            cgrc-dist/aarch64-unknown-linux-musl/cgrc
+            cgrc-dist/armv7-unknown-linux-musleabihf/cgrc
