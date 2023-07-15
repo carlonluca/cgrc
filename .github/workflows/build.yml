@@ -42,6 +42,7 @@ jobs:
         run: |
           export CROSS_CONTAINER_IN_CONTAINER=true
           export HOSTNAME=$(docker ps -ql)
+          export PATH=$PATH:~/.cargo/bin
           rustup default stable
           rustup target add --toolchain stable x86_64-unknown-linux-musl
           cd cgrc-rust
