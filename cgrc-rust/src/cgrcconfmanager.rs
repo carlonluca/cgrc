@@ -131,17 +131,16 @@ impl CGRCConfManager {
     /// Prints user configurations to stdout.
     /// 
     pub fn print_avail_user_confs() {
-        Self::print_avail_confs_in_path(&Self::default_system_path().to_string());
+        if let Some(v) = Self::default_user_path() {
+            Self::print_avail_confs_in_path(&v.to_string());
+        }
     }
 
     ///
     /// Prints system-wide configurations to stdout.
     /// 
     pub fn print_avail_system_confs() {
-        match Self::default_user_path() {
-            None => return,
-            Some(v) => Self::print_avail_confs_in_path(&v)
-        }
+        Self::print_avail_confs_in_path(&Self::default_system_path().to_string());
     }
 
     ///
