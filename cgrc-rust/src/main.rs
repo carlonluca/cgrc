@@ -80,6 +80,13 @@ fn main() {
     }
 
     let conf = CGRCParser::parse_conf_string(conf_data.unwrap());
+    if args.debug {
+        log::debug!("Conf file includes {} items and description is {:?}",
+            conf.items.len(),
+            conf.description
+        );
+    }
+
     let conf_items = &conf.items;
     let stdin = stdin();
     for line in stdin.lock().lines() {

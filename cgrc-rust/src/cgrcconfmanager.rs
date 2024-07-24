@@ -68,25 +68,39 @@ impl CGRCConfManager {
                 }
             }
 
+            let mut conf_path: Option<String> = None;
             if let Some(user_path) = Self::default_user_path() {
                 let proposed_path = PathBuf::from(user_path)
                     .join(conf);
                 if proposed_path.as_path().exists() {
                     if let Some(proposed_path_string) = proposed_path.as_path().to_str() {
-                        return Some(proposed_path_string.to_string());
+                        conf_path = Some(proposed_path_string.to_string());
                     }
                 }
             }
 
-            let proposed_path = Path::new(Self::default_system_path())
-                .join(conf);
-            if proposed_path.as_path().exists() {
-                if let Some(proposed_path_string) = proposed_path.as_path().to_str() {
-                    return Some(proposed_path_string.to_string());
+            if conf_path == None {
+                let proposed_path = Path::new(Self::default_system_path())
+                    .join(conf);
+                if proposed_path.as_path().exists() {
+                    if let Some(proposed_path_string) = proposed_path.as_path().to_str() {
+                        conf_path = Some(proposed_path_string.to_string());
+                    }
                 }
             }
-            
-            None
+
+            return match conf_path {
+                None => None,
+                Some(file_path) => {
+                    match fs::read_to_string(Path::new(&file_path)) {
+                        Ok(v) => Some(v),
+                        Err(e) => {
+                            log::error!("Error: {}. Cannot read conf file {}", e, file_path);
+                            None
+                        }
+                    }
+                }
+            }
         }
     }
 
