@@ -49,14 +49,6 @@ Test_qt6:
     - make
     - ./cgrc --version
 
-Test_rust:
-  stage: test_rust
-  image:
-    name: "rust:1.69"
-  script:
-    - cd cgrc-rust
-    - cargo build
-
 Build:
   stage: build_rust
   image:
