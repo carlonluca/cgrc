@@ -90,8 +90,13 @@ fn main() {
     let conf_items = &conf.items;
     let stdin = stdin();
     for line in stdin.lock().lines() {
-        // TODO: handle errors here.
-        let line = line.unwrap();
+        let line = match line {
+            Ok(v) => v,
+            Err(e) => {
+                println!("Error: {}", e.to_string());
+                continue
+            }
+        };
         let formatted = CGRCParser::parse_log_line(
             &conf_items,
             &line,
