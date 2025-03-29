@@ -52,7 +52,7 @@ Test_qt6:
 Build:
   stage: build_rust
   image:
-    name: "carlonluca/cgrc-ci:latest"
+    name: "carlonluca/cgrc-ci:1.85.1"
   services:
     - docker:dind
   artifacts:
@@ -70,7 +70,7 @@ Build:
     - mv target/x86_64-unknown-linux-musl/release/cgrc ../cgrc-dist/x86_64-unknown-linux-musl/
     - cargo clean
     - cd ..
-    - cargo install cross --git https://github.com/cross-rs/cross --tag v0.2.4
+    - cargo install cross --git https://github.com/cross-rs/cross --tag v0.2.5
     - cross build --release --target aarch64-unknown-linux-musl --manifest-path cgrc-rust/Cargo.toml
     - mkdir -p cgrc-dist/aarch64-unknown-linux-musl
     - mv cgrc-rust/target/aarch64-unknown-linux-musl/release/cgrc cgrc-dist/aarch64-unknown-linux-musl/
